@@ -18,6 +18,7 @@ const DefaultIcon = L.icon({
   popupAnchor: [1, -34],
 });
 
+// Set default icon for all markers
 L.Marker.prototype.options.icon = DefaultIcon;
 
 // Custom active marker icon
@@ -54,7 +55,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
   const { filteredStores, selectedStore, selectStore } = useStores();
   const [mapCenter, setMapCenter] = useState<[number, number]>([37.7749, -122.4194]);
   const [mapZoom, setMapZoom] = useState(12);
-  const [map, setMap] = useState<L.Map | null>(null);
+  const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
 
   // Update map center when selectedStore changes
   useEffect(() => {
@@ -70,24 +71,33 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
 
   // Handler to select a store and close the popup
   const handleSelectStore = (id: string, popupRef: React.RefObject<L.Popup>) => {
-    if (map && popupRef.current) {
-      map.closePopup(popupRef.current);
+    if (mapInstance && popupRef.current) {
+      mapInstance.closePopup(popupRef.current);
     }
     selectStore(id);
+  };
+
+  // Handler for when the map is created
+  const handleMapCreated = (map: L.Map) => {
+    setMapInstance(map);
   };
 
   return (
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
         className="h-full w-full rounded-lg"
-        center={mapCenter}
-        zoom={mapZoom} 
         zoomControl={false}
-        whenCreated={setMap}
+        ref={(node: L.Map | null) => {
+          if (node !== null) {
+            handleMapCreated(node);
+            // Set initial view
+            node.setView(mapCenter, mapZoom);
+          }
+        }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         
         {filteredStores.map((store) => {
@@ -96,13 +106,27 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
             <Marker 
               key={store.id}
               position={[store.geo.latitude, store.geo.longitude]}
-              icon={selectedStore?.id === store.id ? ActiveIcon : DefaultIcon}
               eventHandlers={{
                 click: () => {
                   selectStore(store.id);
                 },
               }}
             >
+              {/* Apply icon differently to avoid TS errors */}
+              {selectedStore?.id === store.id 
+                ? React.useLayoutEffect(() => {
+                    const marker = mapInstance?.getPanes()?.markerPane?.lastChild;
+                    if (marker) {
+                      (marker as HTMLElement).classList.add('active-marker');
+                    }
+                    return () => {
+                      if (marker) {
+                        (marker as HTMLElement).classList.remove('active-marker');
+                      }
+                    };
+                  }, [selectedStore?.id])
+                : null
+              }
               <Popup ref={popupRef}>
                 <div className="text-sm">
                   <h3 className="font-semibold text-store-primary">{store.name}</h3>
