@@ -18,9 +18,6 @@ const DefaultIcon = L.icon({
   popupAnchor: [1, -34],
 });
 
-// Set default icon for all markers
-L.Marker.prototype.options.icon = DefaultIcon;
-
 // Custom component to handle map view updates
 const MapView = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
   const map = useRef<L.Map | null>(null);
@@ -65,36 +62,27 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
         className="h-full w-full rounded-lg"
-        whenReady={(e) => {
-          mapRef.current = e.target;
+        center={mapCenter}
+        zoom={mapZoom}
+        ref={(map) => {
+          mapRef.current = map;
         }}
         style={{ height: '100%', width: '100%' }}
       >
         <MapView center={mapCenter} zoom={mapZoom} />
         
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
         {filteredStores.map((store) => {
           const isActive = selectedStore?.id === store.id;
-          const markerIcon = isActive 
-            ? L.icon({
-                iconUrl: icon,
-                shadowUrl: iconShadow,
-                iconSize: [30, 45],
-                iconAnchor: [15, 45],
-                popupAnchor: [1, -34],
-                className: 'active-marker',
-              }) 
-            : DefaultIcon;
           
           return (
             <Marker 
               key={store.id}
               position={[store.geo.latitude, store.geo.longitude]}
-              icon={markerIcon}
               eventHandlers={{
                 click: () => {
                   selectStore(store.id);

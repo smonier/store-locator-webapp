@@ -23,9 +23,11 @@
   box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
-.active-marker {
+/* Add this for active marker styling */
+.leaflet-marker-icon.active-marker {
   filter: hue-rotate(120deg);
   z-index: 1000 !important;
+  transform-origin: bottom center;
   animation: bounce 0.5s ease-in-out;
 }
 
