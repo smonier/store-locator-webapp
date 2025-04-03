@@ -110,7 +110,6 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
         className="h-full w-full rounded-lg"
         center={mapCenter}
         zoom={mapZoom}
-        ref={setMapRef}
         // Using key prop to trigger re-render when center or zoom changes
         key={`map-${mapCenter.join(',')}-${mapZoom}`}
         whenReady={(e) => handleMapReady(e.target)}
