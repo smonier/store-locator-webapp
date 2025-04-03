@@ -3,6 +3,8 @@
 .leaflet-container {
   font: inherit;
   font-family: inherit;
+  height: 100%;
+  width: 100%;
 }
 
 .leaflet-popup-content-wrapper {
