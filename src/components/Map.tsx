@@ -71,11 +71,9 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
         className="h-full w-full rounded-lg"
+        center={mapCenter}
         zoom={mapZoom} 
         zoomControl={false}
-        whenCreated={(mapInstance) => {
-          mapInstance.setView(mapCenter, mapZoom);
-        }}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -86,19 +84,13 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
           <Marker 
             key={store.id}
             position={[store.geo.latitude, store.geo.longitude]}
+            icon={selectedStore?.id === store.id ? ActiveIcon : DefaultIcon}
             eventHandlers={{
               click: () => {
                 selectStore(store.id);
               },
             }}
           >
-            {selectedStore?.id === store.id ? (
-              <L.Marker 
-                position={[store.geo.latitude, store.geo.longitude]} 
-                icon={ActiveIcon}
-                zIndexOffset={1000}
-              />
-            ) : null}
             <Popup>
               <div className="text-sm">
                 <h3 className="font-semibold text-store-primary">{store.name}</h3>
