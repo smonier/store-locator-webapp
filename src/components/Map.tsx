@@ -60,14 +60,14 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
       <MapContainer 
         className="h-full w-full rounded-lg"
         style={{ height: '100%', width: '100%' }}
-        whenReady={(e) => {
-          mapRef.current = e.target;
-          e.target.setView(mapCenter, mapZoom);
+        whenCreated={(map: L.Map) => {
+          mapRef.current = map;
+          map.setView(mapCenter, mapZoom);
         }}
       >
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
         {filteredStores.map((store) => {
