@@ -54,6 +54,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
   const { filteredStores, selectedStore, selectStore } = useStores();
   const [mapCenter, setMapCenter] = useState<[number, number]>([37.7749, -122.4194]);
   const [mapZoom, setMapZoom] = useState(12);
+  const [map, setMap] = useState<L.Map | null>(null);
 
   // Update map center when selectedStore changes
   useEffect(() => {
@@ -67,6 +68,14 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     }
   }, [selectedStore, filteredStores]);
 
+  // Handler to select a store and close the popup
+  const handleSelectStore = (id: string, popupRef: React.RefObject<L.Popup>) => {
+    if (map && popupRef.current) {
+      map.closePopup(popupRef.current);
+    }
+    selectStore(id);
+  };
+
   return (
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
@@ -74,40 +83,44 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
         center={mapCenter}
         zoom={mapZoom} 
         zoomControl={false}
+        whenCreated={setMap}
       >
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
-        {filteredStores.map((store) => (
-          <Marker 
-            key={store.id}
-            position={[store.geo.latitude, store.geo.longitude]}
-            icon={selectedStore?.id === store.id ? ActiveIcon : DefaultIcon}
-            eventHandlers={{
-              click: () => {
-                selectStore(store.id);
-              },
-            }}
-          >
-            <Popup>
-              <div className="text-sm">
-                <h3 className="font-semibold text-store-primary">{store.name}</h3>
-                <p className="text-xs text-gray-600">{store.address.streetAddress}</p>
-                <p className="text-xs text-gray-600">
-                  {store.address.addressLocality}, {store.address.addressRegion}
-                </p>
-                <button 
-                  onClick={() => selectStore(store.id)} 
-                  className="mt-2 text-xs font-semibold text-store-primary hover:text-store-secondary"
-                >
-                  View Details
-                </button>
-              </div>
-            </Popup>
-          </Marker>
-        ))}
+        {filteredStores.map((store) => {
+          const popupRef = React.createRef<L.Popup>();
+          return (
+            <Marker 
+              key={store.id}
+              position={[store.geo.latitude, store.geo.longitude]}
+              icon={selectedStore?.id === store.id ? ActiveIcon : DefaultIcon}
+              eventHandlers={{
+                click: () => {
+                  selectStore(store.id);
+                },
+              }}
+            >
+              <Popup ref={popupRef}>
+                <div className="text-sm">
+                  <h3 className="font-semibold text-store-primary">{store.name}</h3>
+                  <p className="text-xs text-gray-600">{store.address.streetAddress}</p>
+                  <p className="text-xs text-gray-600">
+                    {store.address.addressLocality}, {store.address.addressRegion}
+                  </p>
+                  <button 
+                    onClick={() => handleSelectStore(store.id, popupRef)} 
+                    className="mt-2 text-xs font-semibold text-store-primary hover:text-store-secondary"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </Popup>
+            </Marker>
+          );
+        })}
         
         <MapRecenter position={mapCenter} zoom={mapZoom} />
       </MapContainer>
