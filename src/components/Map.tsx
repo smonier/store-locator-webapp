@@ -87,9 +87,9 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
       <MapContainer 
         className="h-full w-full rounded-lg"
         style={{ height: '100%', width: '100%' }}
-        whenReady={(e) => {
-          mapRef.current = e.target;
-          e.target.setView(mapCenter, mapZoom);
+        whenReady={(mapInstance) => {
+          mapRef.current = mapInstance.target;
+          mapInstance.target.setView(mapCenter, mapZoom);
         }}
       >
         <TileLayer
