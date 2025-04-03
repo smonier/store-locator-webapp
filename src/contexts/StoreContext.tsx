@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { Store } from '../types/store';
 import { mockStores } from '../lib/mock-data';
@@ -9,7 +8,7 @@ import { mockStores } from '../lib/mock-data';
 interface StoreContextType {
   stores: Store[];
   selectedStore: Store | null;
-  selectStore: (id: string) => void;
+  selectStore: (idOrStore: string | Store) => void;
   searchStores: (query: string) => void;
   filteredStores: Store[];
   loading: boolean;
@@ -35,7 +34,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       setFilteredStores(mockStores);
       setLoading(false);
     }, 1000);
-    
+
     // In a real application with Apollo:
     // if (data) {
     //   setStores(data.stores);
@@ -43,9 +42,13 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     // }
   }, []);
 
-  const selectStore = (id: string) => {
-    const found = stores.find(store => store.id === id);
-    setSelectedStore(found || null);
+  const selectStore = (idOrStore: string | Store) => {
+    if (typeof idOrStore === 'string') {
+      const found = stores.find(store => store.id === idOrStore);
+      setSelectedStore(found || null);
+    } else {
+      setSelectedStore(idOrStore);
+    }
   };
 
   const searchStores = (query: string) => {

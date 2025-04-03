@@ -99,3 +99,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+.custom-div-icon img {
+  transition: transform 0.2s ease;
+}
+
+.active-marker img {
+  transform: scale(1.3);
+  filter: hue-rotate(90deg);
+}

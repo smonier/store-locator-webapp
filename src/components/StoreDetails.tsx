@@ -48,11 +48,11 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
           </div>
         )}
         <div className={`p-4 ${selectedStore.image ? '-mt-12 relative' : ''}`}>
-          <CardTitle className={`${selectedStore.image ? 'text-white' : 'text-foreground'} text-xl`}>
+          <CardTitle className={`${selectedStore.image ? 'text-black' : 'text-foreground'} text-xl`}>
             {selectedStore.name}
           </CardTitle>
           {selectedStore.description && (
-            <p className={`mt-2 text-sm ${selectedStore.image ? 'text-white/90' : 'text-muted-foreground'}`}>
+            <p className={`mt-2 text-sm ${selectedStore.image ? 'text-black/90' : 'text-muted-foreground'}`}>
               {selectedStore.description}
             </p>
           )}

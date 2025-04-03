@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { StoreProvider } from '../contexts/StoreContext';
 import StoreMap from '../components/Map';
@@ -25,6 +24,10 @@ const StoreLocatorContent = () => {
     }
   }, [selectedStore, isMobile]);
 
+  React.useEffect(() => {
+    console.log('Selected store in index.tsx:', selectedStore);
+  }, [selectedStore]);
+
   // Show welcome toast on first load
   React.useEffect(() => {
     toast({
@@ -41,7 +44,7 @@ const StoreLocatorContent = () => {
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-store-background flex">
       {/* Sidebar with store list */}
-      <div 
+      <div
         className={`
           h-full z-10 bg-background shadow-lg 
           ${isMobile ? 'absolute left-0 top-0 bottom-0' : 'relative'} 
@@ -57,30 +60,30 @@ const StoreLocatorContent = () => {
             </Button>
           )}
         </div>
-        
+
         <div className="p-4 border-b">
           <SearchBar />
         </div>
-        
+
         <div className="flex-1 overflow-y-auto p-4">
           <StoreList />
         </div>
       </div>
-      
+
       {/* Mobile sidebar toggle */}
       {isMobile && !sidebarOpen && (
-        <Button 
-          className="absolute top-4 left-4 z-20 bg-white shadow-lg" 
+        <Button
+          className="absolute top-4 left-4 z-20 bg-white shadow-lg"
           size="icon"
           onClick={() => setSidebarOpen(true)}
         >
           <Menu className="h-5 w-5" />
         </Button>
       )}
-      
+
       {/* Collapse sidebar button for desktop */}
       {!isMobile && (
-        <Button 
+        <Button
           className={`absolute top-1/2 z-20 bg-white shadow-lg transform -translate-y-1/2 transition-all duration-300
             ${sidebarOpen ? 'left-96 rotate-180' : 'left-0'}`}
           size="icon"
@@ -90,19 +93,16 @@ const StoreLocatorContent = () => {
           <ChevronRight className="h-4 w-4" />
         </Button>
       )}
-      
+
       {/* Main map area */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative z-0">
         <StoreMap className="h-full" />
-        
-        {/* Store details panel that overlays the map when a store is selected */}
+
+        {/* Store details panel overlays the map */}
         {selectedStore && (
-          <div className={`
-            absolute right-0 top-0 h-full bg-white shadow-lg
-            overflow-y-auto w-full md:w-96 z-30 transition-all duration-300
-          `}>
-            <StoreDetails onClose={handleCloseDetails} />
-          </div>
+            <div className="fixed right-0 top-0 h-full bg-white shadow-lg overflow-y-auto w-full md:w-96 z-[1000] transition-all duration-300">
+              <StoreDetails onClose={handleCloseDetails} />
+            </div>
         )}
       </div>
     </div>
@@ -112,7 +112,7 @@ const StoreLocatorContent = () => {
 // Wrap the content with our provider
 const Index = () => {
   return (
-    <StoreProvider>
+      <StoreProvider>
       <StoreLocatorContent />
     </StoreProvider>
   );

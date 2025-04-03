@@ -1,24 +1,23 @@
-
 import { Store } from '../types/store';
 
 export const mockStores: Store[] = [
   {
     id: '1',
     name: 'Downtown Superstore',
-    description: 'Our flagship store in the heart of downtown with the widest selection of products.',
-    telephone: '+1-555-123-4567',
+    description: 'Our flagship store in the heart of downtown Paris with the widest selection of products.',
+    telephone: '+33-1-2345-6789',
     url: 'https://example.com/downtown',
-    image: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1374&q=80',
+    image: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1374&q=80',
     address: {
-      streetAddress: '123 Main Street',
-      addressLocality: 'Anytown',
-      addressRegion: 'CA',
-      postalCode: '94103',
-      addressCountry: 'US'
+      streetAddress: '101 Rue de Rivoli',
+      addressLocality: 'Paris',
+      addressRegion: 'Île-de-France',
+      postalCode: '75001',
+      addressCountry: 'FR'
     },
     geo: {
-      latitude: 37.7749,
-      longitude: -122.4194
+      latitude: 48.8606,
+      longitude: 2.3376
     },
     openingHoursSpecification: [
       { dayOfWeek: 'Monday', opens: '09:00', closes: '21:00' },
@@ -35,20 +34,20 @@ export const mockStores: Store[] = [
   {
     id: '2',
     name: 'Westside Branch',
-    description: 'Convenient location serving the western neighborhoods.',
-    telephone: '+1-555-987-6543',
+    description: 'Convenient location in Lyon’s western district.',
+    telephone: '+33-4-5678-9012',
     url: 'https://example.com/westside',
-    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80',
     address: {
-      streetAddress: '456 Ocean Avenue',
-      addressLocality: 'Anytown',
-      addressRegion: 'CA',
-      postalCode: '94122',
-      addressCountry: 'US'
+      streetAddress: '25 Avenue des Frères Lumière',
+      addressLocality: 'Lyon',
+      addressRegion: 'Auvergne-Rhône-Alpes',
+      postalCode: '69008',
+      addressCountry: 'FR'
     },
     geo: {
-      latitude: 37.7639,
-      longitude: -122.4784
+      latitude: 45.7485,
+      longitude: 4.8671
     },
     openingHoursSpecification: [
       { dayOfWeek: 'Monday', opens: '10:00', closes: '20:00' },
@@ -65,20 +64,20 @@ export const mockStores: Store[] = [
   {
     id: '3',
     name: 'Southside Outlet',
-    description: 'Our discount outlet with great deals every day.',
-    telephone: '+1-555-345-6789',
+    description: 'Discount outlet in Marseille for the best deals.',
+    telephone: '+33-4-9123-4567',
     url: 'https://example.com/southside',
-    image: 'https://images.unsplash.com/photo-1567449303078-57ad995bd149?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    image: 'https://explorerresearch.com/wp-content/uploads/2022/07/luxury-brand-retail-store-design-1.jpg',
     address: {
-      streetAddress: '789 Industrial Blvd',
-      addressLocality: 'Anytown',
-      addressRegion: 'CA',
-      postalCode: '94124',
-      addressCountry: 'US'
+      streetAddress: '87 Boulevard Rabatau',
+      addressLocality: 'Marseille',
+      addressRegion: 'Provence-Alpes-Côte d\'Azur',
+      postalCode: '13008',
+      addressCountry: 'FR'
     },
     geo: {
-      latitude: 37.7384,
-      longitude: -122.3807
+      latitude: 43.2707,
+      longitude: 5.3900
     },
     openingHoursSpecification: [
       { dayOfWeek: 'Monday', opens: '10:00', closes: '19:00' },
@@ -95,20 +94,20 @@ export const mockStores: Store[] = [
   {
     id: '4',
     name: 'Eastside Express',
-    description: 'Small format store for quick shopping trips.',
-    telephone: '+1-555-234-5678',
+    description: 'Quick service store in Lille’s vibrant east side.',
+    telephone: '+33-3-2034-5678',
     url: 'https://example.com/eastside',
-    image: 'https://images.unsplash.com/photo-1604326531820-e463d4f79e0d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    image: 'https://i0.wp.com/40visuals.com/wp-content/uploads/Retail-store-signage-for-Gucci-scaled.jpeg?fit=2560%2C1707&ssl=1',
     address: {
-      streetAddress: '321 Park Road',
-      addressLocality: 'Anytown',
-      addressRegion: 'CA',
-      postalCode: '94110',
-      addressCountry: 'US'
+      streetAddress: '11 Rue de Lannoy',
+      addressLocality: 'Lille',
+      addressRegion: 'Hauts-de-France',
+      postalCode: '59800',
+      addressCountry: 'FR'
     },
     geo: {
-      latitude: 37.7500,
-      longitude: -122.4100
+      latitude: 50.6272,
+      longitude: 3.0805
     },
     openingHoursSpecification: [
       { dayOfWeek: 'Monday', opens: '08:00', closes: '22:00' },
@@ -125,20 +124,20 @@ export const mockStores: Store[] = [
   {
     id: '5',
     name: 'Northside Market',
-    description: 'Specialty items and gourmet foods.',
-    telephone: '+1-555-876-5432',
+    description: 'Gourmet market in Strasbourg offering fine foods.',
+    telephone: '+33-3-8845-6789',
     url: 'https://example.com/northside',
-    image: 'https://images.unsplash.com/photo-1556741533-6e6a62bd8b49?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
+    image: 'https://www.esperiri.com/wp-content/uploads/2020/11/luxury-shopping-milan-dolce-and-gabbana-boutique-milano-spiga.jpg',
     address: {
-      streetAddress: '654 Hill Street',
-      addressLocality: 'Anytown',
-      addressRegion: 'CA',
-      postalCode: '94118',
-      addressCountry: 'US'
+      streetAddress: '3 Place Kléber',
+      addressLocality: 'Strasbourg',
+      addressRegion: 'Grand Est',
+      postalCode: '67000',
+      addressCountry: 'FR'
     },
     geo: {
-      latitude: 37.7850,
-      longitude: -122.4500
+      latitude: 48.5846,
+      longitude: 7.7508
     },
     openingHoursSpecification: [
       { dayOfWeek: 'Monday', opens: '09:00', closes: '20:00' },
