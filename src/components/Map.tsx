@@ -47,6 +47,26 @@ const MapRecenter: React.FC<MapRecenterProps> = ({ position, zoom = 13 }) => {
   return null;
 };
 
+// Component to handle applying active styling to the selected marker
+const ActiveMarker = ({ mapInstance, isActive }: { mapInstance: L.Map | null, isActive: boolean }) => {
+  useEffect(() => {
+    if (!mapInstance) return;
+
+    const marker = mapInstance.getPanes()?.markerPane?.lastChild;
+    if (marker && isActive) {
+      (marker as HTMLElement).classList.add('active-marker');
+    }
+    
+    return () => {
+      if (marker && isActive) {
+        (marker as HTMLElement).classList.remove('active-marker');
+      }
+    };
+  }, [mapInstance, isActive]);
+  
+  return null;
+};
+
 interface StoreMapProps {
   className?: string;
 }
@@ -86,14 +106,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
         className="h-full w-full rounded-lg"
-        zoomControl={false}
-        ref={(node: L.Map | null) => {
-          if (node !== null) {
-            handleMapCreated(node);
-            // Set initial view
-            node.setView(mapCenter, mapZoom);
-          }
-        }}
+        whenCreated={handleMapCreated}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -102,6 +115,8 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
         
         {filteredStores.map((store) => {
           const popupRef = React.createRef<L.Popup>();
+          const isActive = selectedStore?.id === store.id;
+          
           return (
             <Marker 
               key={store.id}
@@ -112,21 +127,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
                 },
               }}
             >
-              {/* Apply icon differently to avoid TS errors */}
-              {selectedStore?.id === store.id 
-                ? React.useLayoutEffect(() => {
-                    const marker = mapInstance?.getPanes()?.markerPane?.lastChild;
-                    if (marker) {
-                      (marker as HTMLElement).classList.add('active-marker');
-                    }
-                    return () => {
-                      if (marker) {
-                        (marker as HTMLElement).classList.remove('active-marker');
-                      }
-                    };
-                  }, [selectedStore?.id])
-                : null
-              }
+              <ActiveMarker mapInstance={mapInstance} isActive={isActive} />
               <Popup ref={popupRef}>
                 <div className="text-sm">
                   <h3 className="font-semibold text-store-primary">{store.name}</h3>
