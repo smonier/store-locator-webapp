@@ -21,19 +21,6 @@ const DefaultIcon = L.icon({
 // Set default icon for all markers
 L.Marker.prototype.options.icon = DefaultIcon;
 
-// Custom component to handle map view updates
-const MapView = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
-  const map = useRef<L.Map | null>(null);
-  
-  useEffect(() => {
-    if (map.current) {
-      map.current.setView(center, zoom);
-    }
-  }, [center, zoom]);
-  
-  return null;
-};
-
 interface StoreMapProps {
   className?: string;
 }
@@ -56,6 +43,13 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     }
   }, [selectedStore, filteredStores]);
 
+  // Update map view when center/zoom changes
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.setView(mapCenter, mapZoom);
+    }
+  }, [mapCenter, mapZoom]);
+
   // Handler to select a store and close the popup
   const handleSelectStore = (id: string) => {
     selectStore(id);
@@ -66,9 +60,9 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
       <MapContainer 
         className="h-full w-full rounded-lg"
         style={{ height: '100%', width: '100%' }}
-        whenCreated={(map) => {
-          mapRef.current = map;
-          map.setView(mapCenter, mapZoom);
+        whenReady={(e) => {
+          mapRef.current = e.target;
+          e.target.setView(mapCenter, mapZoom);
         }}
       >
         <TileLayer
@@ -78,6 +72,22 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
         
         {filteredStores.map((store) => {
           const isActive = selectedStore?.id === store.id;
+          const markerRef = useRef<L.Marker>(null);
+          
+          // Add active class to marker
+          useEffect(() => {
+            if (markerRef.current && isActive) {
+              const element = markerRef.current.getElement();
+              if (element) {
+                element.classList.add('active-marker');
+              }
+            } else if (markerRef.current) {
+              const element = markerRef.current.getElement();
+              if (element) {
+                element.classList.remove('active-marker');
+              }
+            }
+          }, [isActive]);
           
           return (
             <Marker 
@@ -88,7 +98,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
                   selectStore(store.id);
                 },
               }}
-              className={isActive ? 'active-marker' : ''}
+              ref={markerRef}
             >
               <Popup>
                 <div className="text-sm">
