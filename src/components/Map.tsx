@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
@@ -108,14 +107,13 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
         className="h-full w-full rounded-lg"
-        zoomControl={false}
         ref={setMapRef}
-        defaultCenter={mapCenter}
-        defaultZoom={mapZoom}
+        center={mapCenter}
+        zoom={mapZoom}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         
         {filteredStores.map((store) => {
