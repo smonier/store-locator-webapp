@@ -102,19 +102,18 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
   const onMapReady = (map: L.Map) => {
     setMapInstance(map);
     mapRef.current = map;
-    map.setView(mapCenter, mapZoom);
   };
 
   return (
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
         className="h-full w-full rounded-lg"
-        whenReady={onMapReady}
+        whenCreated={(map) => onMapReady(map)}
         zoomControl={false}
       >
         <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
         {filteredStores.map((store) => {
@@ -142,6 +141,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
                   <button 
                     onClick={(e) => {
                       e.preventDefault(); // Prevent the event from bubbling
+                      e.stopPropagation(); // Stop propagation to parent elements
                       handleSelectStore(store.id, popupRef);
                     }}
                     className="mt-2 text-xs font-semibold text-store-primary hover:text-store-secondary"
