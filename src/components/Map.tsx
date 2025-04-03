@@ -18,6 +18,9 @@ const DefaultIcon = L.icon({
   popupAnchor: [1, -34],
 });
 
+// Set default icon for all markers
+L.Marker.prototype.options.icon = DefaultIcon;
+
 // Custom component to handle map view updates
 const MapView = ({ center, zoom }: { center: [number, number]; zoom: number }) => {
   const map = useRef<L.Map | null>(null);
@@ -62,18 +65,15 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
         className="h-full w-full rounded-lg"
-        center={mapCenter}
-        zoom={mapZoom}
-        ref={(map) => {
-          mapRef.current = map;
-        }}
         style={{ height: '100%', width: '100%' }}
+        whenCreated={(map) => {
+          mapRef.current = map;
+          map.setView(mapCenter, mapZoom);
+        }}
       >
-        <MapView center={mapCenter} zoom={mapZoom} />
-        
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         
         {filteredStores.map((store) => {
@@ -88,6 +88,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
                   selectStore(store.id);
                 },
               }}
+              className={isActive ? 'active-marker' : ''}
             >
               <Popup>
                 <div className="text-sm">
