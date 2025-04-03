@@ -98,24 +98,26 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     selectStore(id);
   };
 
-  // Handler for when the map is ready - using a ref function to store the map instance
-  const setMapRef = React.useCallback((map: L.Map) => {
+  // Add an event handler for when the map is ready
+  const handleMapReady = (map: L.Map) => {
     setMapInstance(map);
     mapRef.current = map;
-  }, []);
+  };
 
   return (
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
         className="h-full w-full rounded-lg"
+        center={mapCenter}
+        zoom={mapZoom}
         ref={setMapRef}
         // Using key prop to trigger re-render when center or zoom changes
         key={`map-${mapCenter.join(',')}-${mapZoom}`}
-        whenCreated={setMapRef}
+        whenReady={(e) => handleMapReady(e.target)}
       >
         <TileLayer 
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         
         {filteredStores.map((store) => {
