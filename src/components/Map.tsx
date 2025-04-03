@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
@@ -86,10 +87,10 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
       <MapContainer 
         className="h-full w-full rounded-lg"
         style={{ height: '100%', width: '100%' }}
-        whenReady={() => {
-          if (mapRef.current) {
-            mapRef.current.setView(mapCenter, mapZoom);
-          }
+        center={mapCenter}
+        zoom={mapZoom}
+        ref={(map) => {
+          mapRef.current = map;
         }}
       >
         <TileLayer
