@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -76,6 +76,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
   const [mapCenter, setMapCenter] = useState<[number, number]>([37.7749, -122.4194]);
   const [mapZoom, setMapZoom] = useState(12);
   const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
+  const mapRef = useRef<L.Map | null>(null);
 
   // Update map center when selectedStore changes
   useEffect(() => {
@@ -97,16 +98,19 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     selectStore(id);
   };
 
-  // Handler for when the map is created
-  const handleMapCreated = (map: L.Map) => {
+  // Handler for when the map is ready
+  const onMapReady = (map: L.Map) => {
     setMapInstance(map);
+    mapRef.current = map;
+    map.setView(mapCenter, mapZoom);
   };
 
   return (
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
         className="h-full w-full rounded-lg"
-        whenCreated={handleMapCreated}
+        whenReady={onMapReady}
+        zoomControl={false}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -136,7 +140,10 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
                     {store.address.addressLocality}, {store.address.addressRegion}
                   </p>
                   <button 
-                    onClick={() => handleSelectStore(store.id, popupRef)} 
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent the event from bubbling
+                      handleSelectStore(store.id, popupRef);
+                    }}
                     className="mt-2 text-xs font-semibold text-store-primary hover:text-store-secondary"
                   >
                     View Details
