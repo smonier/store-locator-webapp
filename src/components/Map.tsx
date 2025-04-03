@@ -99,7 +99,8 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
   };
 
   // Handler for when the map is ready
-  const onMapReady = (map: L.Map) => {
+  const onMapReady = (event: L.LeafletEvent) => {
+    const map = event.target;
     setMapInstance(map);
     mapRef.current = map;
   };
