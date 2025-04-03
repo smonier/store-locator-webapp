@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Store } from '../types/store';
 import { useStores } from '../contexts/StoreContext';
 
 // Fix for Leaflet marker icons not displaying
@@ -71,27 +70,35 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
   return (
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
-        center={mapCenter} 
-        zoom={mapZoom} 
         className="h-full w-full rounded-lg"
-        zoomControl={false} // We'll add our own zoom controls in a better position
+        zoom={mapZoom} 
+        zoomControl={false}
+        whenCreated={(mapInstance) => {
+          mapInstance.setView(mapCenter, mapZoom);
+        }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         
         {filteredStores.map((store) => (
           <Marker 
             key={store.id}
             position={[store.geo.latitude, store.geo.longitude]}
-            icon={selectedStore?.id === store.id ? ActiveIcon : DefaultIcon}
             eventHandlers={{
               click: () => {
                 selectStore(store.id);
               },
             }}
           >
+            {selectedStore?.id === store.id ? (
+              <L.Marker 
+                position={[store.geo.latitude, store.geo.longitude]} 
+                icon={ActiveIcon}
+                zIndexOffset={1000}
+              />
+            ) : null}
             <Popup>
               <div className="text-sm">
                 <h3 className="font-semibold text-store-primary">{store.name}</h3>
@@ -111,15 +118,6 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
         ))}
         
         <MapRecenter position={mapCenter} zoom={mapZoom} />
-        
-        {/* Add zoom control in a better position */}
-        <div className="leaflet-control-container">
-          <div className="leaflet-top leaflet-right">
-            <div className="leaflet-control-zoom">
-              <L.Control.Zoom position="topright" />
-            </div>
-          </div>
-        </div>
       </MapContainer>
     </div>
   );
