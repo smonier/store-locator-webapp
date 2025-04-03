@@ -98,21 +98,20 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     selectStore(id);
   };
 
-  // Handler for when the map is ready
-  const onMapReady = (event: L.LeafletEvent) => {
-    const map = event.target;
+  // Handler for when the map is ready - using a ref function to store the map instance
+  const setMapRef = React.useCallback((map: L.Map) => {
     setMapInstance(map);
     mapRef.current = map;
-  };
+  }, []);
 
   return (
     <div className={`w-full h-full ${className || ''}`}>
       <MapContainer 
         className="h-full w-full rounded-lg"
-        whenReady={onMapReady}
-        zoomControl={false}
         center={mapCenter}
         zoom={mapZoom}
+        zoomControl={false}
+        whenCreated={setMapRef}
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
