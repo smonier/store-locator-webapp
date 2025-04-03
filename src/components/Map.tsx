@@ -112,11 +112,11 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
         zoom={mapZoom}
         // Using key prop to trigger re-render when center or zoom changes
         key={`map-${mapCenter.join(',')}-${mapZoom}`}
-        whenReady={(e) => handleMapReady(e.target)}
+        whenCreated={handleMapReady}
       >
         <TileLayer 
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         
         {filteredStores.map((store) => {
