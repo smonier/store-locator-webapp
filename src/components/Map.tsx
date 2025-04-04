@@ -2,8 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useStores } from '../contexts/StoreContext';
-
+import { useStores } from '../contexts/useStores';
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -20,7 +19,7 @@ const defaultIcon = L.icon({
 const createActiveIcon = () =>
     L.divIcon({
       className: 'custom-div-icon active-marker',
-      html: `<img src="${iconUrl}" style="width:25px;height:41px;" />`,
+      html: `<img src="${iconUrl}" style="width:25px;height:41px; filter: hue-rotate(230deg) saturate(8);"/>`,
       iconSize: [25, 41],
       iconAnchor: [12, 41],
     });

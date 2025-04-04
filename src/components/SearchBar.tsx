@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useStores } from '../contexts/StoreContext';
+import { useStores } from '../contexts/useStores';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';

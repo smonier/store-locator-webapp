@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Store } from '../types/store';
-import { useStores } from '../contexts/StoreContext';
+import { useStores } from '../contexts/useStores';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { StoreProvider } from '../contexts/StoreContext';
+import { StoreProvider } from '../contexts/StoreProvider';
 import StoreMap from '../components/Map';
 import StoreList from '../components/StoreList';
 import StoreDetails from '../components/StoreDetails';
 import SearchBar from '../components/SearchBar';
 import { Button } from '@/components/ui/button';
-import { useStores } from '../contexts/StoreContext';
+import { useStores } from '../contexts/useStores';
 import { ChevronRight, Menu, X } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useToast } from '@/hooks/use-toast';

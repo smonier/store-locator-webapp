@@ -8,6 +8,10 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 3000,
+    headers: {
+      'X-Frame-Options': 'ALLOWALL',
+      'Content-Security-Policy': "frame-ancestors 'self' *"
+    }
   },
   plugins: [
     react(),
