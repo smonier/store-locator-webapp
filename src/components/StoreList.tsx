@@ -4,6 +4,7 @@ import { Store } from '../types/store';
 import { useStores } from '../contexts/useStores';
 import { Card } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useTranslation } from 'react-i18next';
 
 interface StoreListProps {
   className?: string;
@@ -11,6 +12,7 @@ interface StoreListProps {
 
 const StoreList: React.FC<StoreListProps> = ({ className }) => {
   const { filteredStores, selectedStore, selectStore, loading } = useStores();
+  const { t } = useTranslation();
 
   if (loading) {
     return (
@@ -29,7 +31,7 @@ const StoreList: React.FC<StoreListProps> = ({ className }) => {
   if (filteredStores.length === 0) {
     return (
       <div className={`flex flex-col items-center justify-center h-full ${className || ''}`}>
-        <p className="text-muted-foreground">No stores found.</p>
+        <p className="text-muted-foreground">{t('storelist.nostore')}</p>
       </div>
     );
   }
@@ -55,6 +57,8 @@ interface StoreListItemProps {
 }
 
 const StoreListItem: React.FC<StoreListItemProps> = ({ store, isSelected, onSelect }) => {
+  const { t } = useTranslation();
+
   return (
     <Card 
       className={`p-4 cursor-pointer transition-all duration-200 ${
@@ -74,7 +78,7 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ store, isSelected, onSele
           </p>
           {store.distance && (
             <p className="text-xs text-muted-foreground mt-1">
-              {store.distance.toFixed(1)} miles away
+              {store.distance.toFixed(1)} {t('storelist.miles')}
             </p>
           )}
         </div>
@@ -85,7 +89,7 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ store, isSelected, onSele
                 ? 'bg-green-100 text-green-800' 
                 : 'bg-red-100 text-red-800'
             }`}>
-              {isStoreOpen(store) ? 'Open' : 'Closed'}
+            {isStoreOpen(store) ? t('storelist.open') : t('storelist.closed')}
             </span>
           </div>
         )}

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { MapPin, Clock, Phone, Globe, ChevronLeft } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface StoreDetailsProps {
   className?: string;
@@ -14,6 +15,7 @@ interface StoreDetailsProps {
 
 const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
   const { selectedStore } = useStores();
+  const { t } = useTranslation();
 
   if (!selectedStore) return null;
 
@@ -64,7 +66,7 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
         <div className="flex items-start">
           <MapPin className="h-5 w-5 text-store-primary mr-2 mt-0.5" />
           <div>
-            <h3 className="text-sm font-medium">Address</h3>
+            <h3 className="text-sm font-medium">{t('storedetails.address')}</h3>
             <p className="text-sm text-muted-foreground">{formatAddress(selectedStore)}</p>
             <a
               href={`https://www.google.com/maps/dir/?api=1&destination=${selectedStore.geo.latitude},${selectedStore.geo.longitude}`}
@@ -72,7 +74,7 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
               rel="noopener noreferrer"
               className="text-xs text-store-primary hover:text-store-secondary hover:underline mt-1 inline-block"
             >
-              Get Directions
+              {t('storedetails.directions')}
             </a>
           </div>
         </div>
@@ -86,15 +88,15 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
               <Clock className="h-5 w-5 text-store-primary mr-2 mt-0.5" />
               <div className="w-full">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">Hours</h3>
-                  <Badge variant={isStoreOpenNow(selectedStore) ? 'success' : 'destructive'} className="text-[10px]">
-                    {isStoreOpenNow(selectedStore) ? 'OPEN NOW' : 'CLOSED'}
+                  <h3 className="text-sm font-medium">{t('storedetails.hours')}</h3>
+                  <Badge variant={isStoreOpenNow(selectedStore) ? 'success' : 'destructive'}>
+                    {isStoreOpenNow(selectedStore) ? t('storedetails.open') : t('storedetails.closed')}
                   </Badge>
                 </div>
                 <div className="mt-1 text-sm">
                   {groupedHours.map((group, i) => (
-                    <div key={i} className="flex justify-between text-muted-foreground text-xs mb-1">
-                      <span>{group.days}</span>
+                      <div key={i} className="flex justify-between text-muted-foreground text-xs mb-1">
+                        <span>{group.days}</span>
                       <span>{group.hours}</span>
                     </div>
                   ))}
@@ -124,7 +126,7 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
                 rel="noopener noreferrer"
                 className="text-sm hover:underline text-store-primary truncate"
               >
-                Visit Website
+                {t('storedetails.website')}
               </a>
             </div>
           )}
@@ -135,7 +137,7 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
           <>
             <Separator className="my-2" />
             <div>
-              <h3 className="text-sm font-medium mb-2">Amenities</h3>
+              <h3 className="text-sm font-medium mb-2">{t('storedetails.amenities')}</h3>
               <div className="flex flex-wrap gap-2">
                 {selectedStore.amenityFeature.map((amenity) => (
                   <Badge key={amenity} variant="outline" className="text-xs">

@@ -4,6 +4,7 @@ import { useStores } from '../contexts/useStores';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface SearchBarProps {
   className?: string;
@@ -12,7 +13,8 @@ interface SearchBarProps {
 const SearchBar: React.FC<SearchBarProps> = ({ className }) => {
   const [query, setQuery] = useState('');
   const { searchStores } = useStores();
-  
+  const { t } = useTranslation();
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     searchStores(query);
@@ -33,7 +35,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }) => {
         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
         <Input
           type="text"
-          placeholder="Search stores by name or location..."
+          placeholder={t('searchbar.placeholder')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           className="pl-10 pr-16 bg-background border-muted"
@@ -44,7 +46,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }) => {
           variant="ghost"
           className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 text-xs"
         >
-          Search
+          {t('searchbar.button')}
         </Button>
       </div>
     </form>

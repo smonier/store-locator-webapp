@@ -1,0 +1,28 @@
+{
+  "title": "Localizador de tiendas",
+  "toast": {
+    "welcome": {
+      "title": "Bienvenido al Localizador de Tiendas",
+      "description": "Encuentra la tienda más cercana usando la búsqueda o navegando en el mapa"
+    }
+  },
+  "searchbar": {
+    "placeholder": "Buscar tiendas por nombre o ubicación...",
+    "button": "buscar"
+  },
+  "storelist": {
+    "nostore": "No se encontraron tiendas.",
+    "open": "Abierto",
+    "closed": "Cerrado",
+    "miles": "millas"
+  },
+  "storedetails": {
+    "address": "Dirección",
+    "directions": "Cómo llegar",
+    "hours": "Horario",
+    "open": "ABIERTO",
+    "closed": "CERRADO",
+    "amenities": "Servicios",
+    "website": "Visitar sitio web"
+  }
+}

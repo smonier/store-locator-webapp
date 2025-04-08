@@ -1,0 +1,28 @@
+{
+  "title": "Filialfinder",
+  "toast": {
+    "welcome": {
+      "title": "Willkommen beim Filialfinder",
+      "description": "Finde die nächstgelegene Filiale über die Suche oder die Karte"
+    }
+  },
+  "searchbar": {
+    "placeholder": "Suche nach Namen oder Standort...",
+    "button": "suchen"
+  },
+  "storelist": {
+    "nostore": "Keine Filialen gefunden.",
+    "open": "Geöffnet",
+    "closed": "Geschlossen",
+    "miles": "Meilen entfernt"
+  },
+  "storedetails": {
+    "address": "Adresse",
+    "directions": "Route anzeigen",
+    "hours": "Öffnungszeiten",
+    "open": "GEÖFFNET",
+    "closed": "GESCHLOSSEN",
+    "amenities": "Ausstattung",
+    "website": "Webseite besuchen"
+  }
+}

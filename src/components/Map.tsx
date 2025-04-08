@@ -18,10 +18,21 @@ const defaultIcon = L.icon({
 // Create a custom active icon using divIcon
 const createActiveIcon = () =>
     L.divIcon({
-      className: 'custom-div-icon active-marker',
-      html: `<img src="${iconUrl}" style="width:25px;height:41px; filter: hue-rotate(230deg) saturate(8);"/>`,
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
+        className: 'custom-div-icon',
+        html: `
+      <div style="width: 25px; height: 41px;">
+        <svg width="25" height="41" viewBox="0 0 25 41" xmlns="http://www.w3.org/2000/svg">
+          <path 
+            d="M12.5 0C5.6 0 0 5.6 0 12.5C0 22 12.5 41 12.5 41C12.5 41 25 22 25 12.5C25 5.6 19.4 0 12.5 0Z" 
+            fill="#8D1700"
+          />
+          <circle cx="12.5" cy="12.5" r="5" fill="white"/>
+        </svg>
+      </div>
+    `,
+        iconSize: [25, 41],
+        iconAnchor: [12.5, 41],
+        className: '', // prevent Leaflet from applying its default green marker styles
     });
 
 interface StoreMapProps {

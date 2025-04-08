@@ -1,0 +1,28 @@
+{
+    "title": "Localisateur de magasins",
+    "toast": {
+        "welcome": {
+            "title": "Bienvenue sur le localisateur de magasins",
+            "description": "Trouvez le magasin le plus proche en utilisant la recherche ou la carte"
+        }
+    },
+    "searchbar": {
+        "placeholder": "Rechercher un magasin par nom ou localisation...",
+        "button": "rechercher"
+    },
+    "storelist": {
+        "nostore": "Aucun magasin trouvé.",
+        "open": "Ouvert",
+        "closed": "Fermé",
+        "miles": "miles"
+    },
+    "storedetails": {
+        "address": "Adresse",
+        "directions": "Itinéraire",
+        "hours": "Horaires",
+        "open": "OUVERT",
+        "closed": "FERMÉ",
+        "amenities": "Services",
+        "website": "Visiter le site"
+    }
+}

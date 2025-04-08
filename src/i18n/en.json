@@ -1,0 +1,28 @@
+{
+    "title": "Store Locator",
+    "toast": {
+        "welcome": {
+            "title": "Welcome to Store Locator",
+            "description": "Find the nearest store using the search or by browsing the map"
+        }
+    },
+    "searchbar": {
+        "placeholder": "Search stores by name or location...",
+        "button": "search"
+    },
+    "storelist" : {
+        "nostore": "No stores found.",
+        "open" : "Open",
+        "closed" : "Closed",
+        "miles" : "miles away"
+    },
+    "storedetails": {
+        "address": "Address",
+        "directions": "Get Directions",
+        "hours": "Hours",
+        "open": "OPEN NOW",
+        "closed": "CLOSED",
+        "amenities": "Amenities",
+        "website": "Visit Website"
+    }
+}

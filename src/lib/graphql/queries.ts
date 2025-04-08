@@ -3,9 +3,9 @@ import { gql } from '@apollo/client';
 
 // Query to fetch all stores
 export const GET_ALL_STORES = gql`
-  query GetStores($language: String!) {
-    jcr (workspace: LIVE) {
-      nodesByCriteria(criteria: {nodeType: "slocnt:store"}) {
+  query GetStores($workspace: Workspace!, $language: String!, $path: String!) {
+    jcr(workspace: $workspace) {
+      nodesByCriteria(criteria: {nodeType: "slocnt:store", paths: [$path]}) {
         nodes {
           uuid
           displayName(language: $language)

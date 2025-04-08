@@ -1,12 +1,23 @@
+import './index.css';
+import './styles/map-overrides.css';
+import './App'; // This file sets up and exposes window.storeLocatorUIApp
 
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import './styles/map-overrides.css'
+// Example: call the exported render function with your target and context
+// You must call this from somewhere — either here or via external script
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+/*
+window.storeLocatorUIApp?.('root', {
+    host: window.location.host,
+    workspace: 'LIVE',
+    isEdit: false,
+    locale: 'en',
+    storeLocatorId: '',
+    gqlServerUrl: 'http://localhost:8080/modules/graphql',
+    contextServerUrl: 'http://localhost:8181',
+    appContext: {},
+    cndTypes: [],
+    scope: 'lkk-corp',
+    previewCm: '',
+    previewTarget: ''
+});*/
+
