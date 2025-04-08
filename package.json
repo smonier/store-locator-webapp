@@ -4,16 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-
-    "replace-fonts-path": "find dist/assets -name '*.css' -exec sed -i '' 's#/static/assets/#/modules/store-locator/fonts/webapp/#g' {} +",
-    "sync-css": "mkdir -p ../store-locator/src/main/resources/css/webapp/ && find dist/assets -name '*.css' -exec rsync -av --delete --exclude 'README.txt' {} ../store-locator/src/main/resources/css/webapp/ \\;",    "sync-js": "rsync -av --delete --exclude 'README.txt' dist/assets/*.js ../store-locator/src/main/resources/javascript/webapp/",
-    "sync-media": "rsync -av --delete dist/assets/*.{woff,woff2,ttf,eot,svg,png,jpg,jpeg,gif} ../store-locator/src/main/resources/fonts/webapp/",
+    "replace-fonts-path": "find dist/assets -type f \\( -name '*.css' -o -name '*.js' -o -name '*.html' \\) -exec sed -i '' -e 's#/static/assets/#/modules/store-locator/fonts/webapp/#g' -e 's#/assets/#/modules/store-locator/fonts/webapp/#g' {} +",
+    "sync-css": "mkdir -p ../store-locator/src/main/resources/css/webapp/ && find dist/assets -name '*.css' -exec rsync -av --delete --exclude 'README.txt' {} ../store-locator/src/main/resources/css/webapp/ \\;",
+    "sync-js": "rsync -av --delete --exclude 'README.txt' dist/assets/*.js ../store-locator/src/main/resources/javascript/webapp/",
+    "sync-media": "mkdir -p ../store-locator/src/main/resources/fonts/webapp/ && rsync -av --delete dist/assets/*.{woff,woff2,ttf,eot,svg,png,jpg,jpeg,gif} ../store-locator/src/main/resources/fonts/webapp/",
     "update-css-maps": "find ../store-locator/src/main/resources/css/webapp/ -name '*.css.map' -exec sed -i '' 's#assets#modules/store-locator/css/webapp#g' {} +",
     "update-js-maps": "find ../store-locator/src/main/resources/javascript/webapp/ -name '*.js.map' -exec sed -i '' 's#assets#modules/store-locator/javascript/webapp#g' {} +",
-
     "build-jahia": "yarn build && yarn replace-fonts-path && yarn sync-css && yarn sync-js && yarn update-js-maps && yarn update-css-maps && yarn sync-media"
   },
   "dependencies": {

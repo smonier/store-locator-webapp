@@ -1,5 +1,4 @@
-import './index.css';
-import './styles/map-overrides.css';
+
 import './App'; // This file sets up and exposes window.storeLocatorUIApp
 
 // Example: call the exported render function with your target and context

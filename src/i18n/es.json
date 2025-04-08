@@ -7,7 +7,7 @@
     }
   },
   "searchbar": {
-    "placeholder": "Buscar tiendas por nombre o ubicación...",
+    "placeholder": "  Buscar tiendas por nombre o ubicación...",
     "button": "buscar"
   },
   "storelist": {

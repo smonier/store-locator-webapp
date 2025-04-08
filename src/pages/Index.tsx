@@ -36,8 +36,8 @@ const StoreLocatorContent = () => {
   };
 
   return (
-      <div className="relative h-screen w-screen overflow-hidden bg-store-background flex">
-        {/* Sidebar */}
+      <div className="relative w-full h-full min-h-[600px] overflow-hidden bg-store-background flex">
+          {/* Sidebar */}
         <div
             className={`
           h-full z-10 bg-background shadow-lg 
@@ -89,13 +89,16 @@ const StoreLocatorContent = () => {
         )}
 
         {/* Map + Store Details */}
-        <div className="flex-1 relative z-0">
-          <StoreMap className="h-full" />
-          {selectedStore && (
-              <div className="fixed right-0 top-0 h-full bg-white shadow-lg overflow-y-auto w-full md:w-96 z-[1000] transition-all duration-300">
-                <StoreDetails onClose={handleCloseDetails} />
-              </div>
-          )}
+        <div className="flex-1 relative z-0 h-full">
+            <div className="h-full min-h-[500px]">
+
+            <StoreMap className="h-full w-full z-0" />
+                {selectedStore && (
+                    <div className="absolute left-0 bottom-0 w-full z-50 bg-white shadow-lg transition-all duration-300">
+                        <StoreDetails onClose={handleCloseDetails}/>
+                    </div>
+                )}
+            </div>
         </div>
       </div>
   );
@@ -103,7 +106,7 @@ const StoreLocatorContent = () => {
 
 const Index = () => (
     <StoreProvider>
-      <StoreLocatorContent />
+        <StoreLocatorContent/>
     </StoreProvider>
 );
 

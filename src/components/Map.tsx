@@ -75,7 +75,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
         <MapContainer
             center={mapCenter}
             zoom={mapZoom}
-            className="h-full w-full rounded-lg"
+            className="h-full w-full rounded-lg z-0"
             style={{ height: '100%', width: '100%' }}
         >
           <SetMapRef />

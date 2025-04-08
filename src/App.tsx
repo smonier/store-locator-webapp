@@ -15,7 +15,8 @@ import { getClient } from './lib/apollo-client';
 import { ApolloProvider } from '@apollo/client';
 import { JahiaCtxProvider, AppCtxProvider } from './contexts';
 import { ErrorHandler } from './components/Error/ErrorHandler';
-
+import './index.css';
+import './styles/map-overrides.css';
 
 interface RenderContext {
     host: string;

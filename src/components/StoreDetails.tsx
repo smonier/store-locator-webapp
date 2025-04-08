@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { MapPin, Clock, Phone, Globe, ChevronLeft } from 'lucide-react';
+import { MapPin, Clock, Phone, Globe, Accessibility, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface StoreDetailsProps {
@@ -29,127 +29,135 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
   const groupedHours = groupOpeningHours(selectedStore.openingHoursSpecification || []);
 
   return (
-    <Card className={`overflow-hidden ${className || ''}`}>
-      <CardHeader className="p-0">
-        {selectedStore.image && (
-          <div className="relative h-48 w-full">
-            <img
-              src={selectedStore.image}
-              alt={selectedStore.name}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              onClick={onClose}
-              className="absolute top-2 left-2 text-white bg-black/30 hover:bg-black/40"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-          </div>
-        )}
-        <div className={`p-4 ${selectedStore.image ? '-mt-12 relative' : ''}`}>
-          <CardTitle className={`${selectedStore.image ? 'text-black' : 'text-foreground'} text-xl`}>
-            {selectedStore.name}
-          </CardTitle>
-          {selectedStore.description && (
-            <p className={`mt-2 text-sm ${selectedStore.image ? 'text-black/90' : 'text-muted-foreground'}`}>
-              {selectedStore.description}
-            </p>
-          )}
-        </div>
-      </CardHeader>
-      
-      <CardContent className="p-4 pt-0 space-y-4">
-        {/* Address */}
-        <div className="flex items-start">
-          <MapPin className="h-5 w-5 text-store-primary mr-2 mt-0.5" />
-          <div>
-            <h3 className="text-sm font-medium">{t('storedetails.address')}</h3>
-            <p className="text-sm text-muted-foreground">{formatAddress(selectedStore)}</p>
-            <a
-              href={`https://www.google.com/maps/dir/?api=1&destination=${selectedStore.geo.latitude},${selectedStore.geo.longitude}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-store-primary hover:text-store-secondary hover:underline mt-1 inline-block"
-            >
-              {t('storedetails.directions')}
-            </a>
-          </div>
-        </div>
+      <Card className={`overflow-hidden ${className || ''}`}>
+        <CardContent className="p-4">
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Column 1: Image */}
+            <div className="md:w-1/4 flex-shrink-0">
+              {selectedStore.image && (
+                  <div className="relative w-full h-40 md:h-48 rounded overflow-hidden">
+                    <img
+                        src={selectedStore.image}
+                        alt={selectedStore.name}
+                        className="w-full h-full object-cover"
+                    />
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={onClose}
+                        className="absolute top-2 left-2 text-white bg-black/30 hover:bg-black/40"
+                    >
+                      <X className="h-5 w-5" />
+                    </Button>
+                  </div>
+              )}
+            </div>
 
-        <Separator className="my-2" />
+            {/* Vertical separator */}
+            <div className="hidden md:block w-px bg-border" />
 
-        {/* Hours */}
-        {selectedStore.openingHoursSpecification && (
-          <>
-            <div className="flex items-start">
-              <Clock className="h-5 w-5 text-store-primary mr-2 mt-0.5" />
-              <div className="w-full">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-medium">{t('storedetails.hours')}</h3>
-                  <Badge variant={isStoreOpenNow(selectedStore) ? 'success' : 'destructive'}>
-                    {isStoreOpenNow(selectedStore) ? t('storedetails.open') : t('storedetails.closed')}
-                  </Badge>
-                </div>
-                <div className="mt-1 text-sm">
-                  {groupedHours.map((group, i) => (
-                      <div key={i} className="flex justify-between text-muted-foreground text-xs mb-1">
-                        <span>{group.days}</span>
-                      <span>{group.hours}</span>
+            {/* Column 2: Name & Description */}
+            <div className="md:w-1/4 space-y-2">
+              <h2 className="text-lg font-bold">{selectedStore.name}</h2>
+              {selectedStore.description && (
+                  <p className="text-sm text-muted-foreground">{selectedStore.description}</p>
+              )}
+              {/* Amenities */}
+              {selectedStore.amenityFeature?.length > 0 && (
+                  <div>
+                  <div className="flex items-center">
+                    <Accessibility className="h-4 w-4 text-store-primary mr-2"/>
+                    <h3 className="text-sm font-medium mt-2 mb-2">{t('storedetails.amenities')}</h3>
+                  </div>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedStore.amenityFeature.map((amenity) => (
+                          <Badge key={amenity} variant="outline" className="text-xs">
+                            {amenity}
+                          </Badge>
+                      ))}
                     </div>
-                  ))}
+                  </div>
+              )}
+            </div>
+
+            <div className="hidden md:block w-px bg-border" />
+
+            {/* Column 3: Address, Contact */}
+            <div className="md:w-1/4 space-y-4">
+              <div className="flex items-start">
+                <MapPin className="h-5 w-5 text-store-primary mr-2 mt-0.5" />
+                <div>
+                  <h3 className="text-sm font-medium">{t('storedetails.address')}</h3>
+                  <p className="text-sm text-muted-foreground">{formatAddress(selectedStore)}</p>
+                  <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${selectedStore.geo.latitude},${selectedStore.geo.longitude}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-store-primary hover:text-store-secondary hover:underline mt-1 inline-block"
+                  >
+                    {t('storedetails.directions')}
+                  </a>
                 </div>
               </div>
-            </div>
-            <Separator className="my-2" />
-          </>
-        )}
 
-        {/* Contact */}
-        <div className="grid grid-cols-1 gap-3">
-          {selectedStore.telephone && (
-            <div className="flex items-center">
-              <Phone className="h-4 w-4 text-store-primary mr-2" />
-              <a href={`tel:${selectedStore.telephone}`} className="text-sm hover:underline">
-                {selectedStore.telephone}
-              </a>
-            </div>
-          )}
-          {selectedStore.url && (
-            <div className="flex items-center">
-              <Globe className="h-4 w-4 text-store-primary mr-2" />
-              <a 
-                href={selectedStore.url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-sm hover:underline text-store-primary truncate"
-              >
-                {t('storedetails.website')}
-              </a>
-            </div>
-          )}
-        </div>
+              {selectedStore.telephone && (
+                  <div className="flex items-center">
+                    <Phone className="h-4 w-4 text-store-primary mr-2" />
+                    <a href={`tel:${selectedStore.telephone}`} className="text-sm hover:underline">
+                      {selectedStore.telephone}
+                    </a>
+                  </div>
+              )}
 
-        {/* Amenities */}
-        {selectedStore.amenityFeature && selectedStore.amenityFeature.length > 0 && (
-          <>
-            <Separator className="my-2" />
-            <div>
-              <h3 className="text-sm font-medium mb-2">{t('storedetails.amenities')}</h3>
-              <div className="flex flex-wrap gap-2">
-                {selectedStore.amenityFeature.map((amenity) => (
-                  <Badge key={amenity} variant="outline" className="text-xs">
-                    {amenity}
-                  </Badge>
-                ))}
-              </div>
+              {selectedStore.url && (
+                  <div className="flex items-center">
+                    <Globe className="h-4 w-4 text-store-primary mr-2" />
+                    <a
+                        href={selectedStore.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm hover:underline text-store-primary truncate"
+                    >
+                      {t('storedetails.website')}
+                    </a>
+                  </div>
+              )}
             </div>
-          </>
-        )}
-      </CardContent>
-    </Card>
+
+            <div className="hidden md:block w-px bg-border" />
+
+            {/* Column 4: Hours & Amenities */}
+            <div className="md:w-1/4 space-y-4">
+              {/* Hours */}
+              {selectedStore.openingHoursSpecification && (
+                  <div>
+                    <div className="flex items-start">
+                      <Clock className="h-5 w-5 text-store-primary mr-2 mt-0.5" />
+                      <div className="w-full">
+                        <div className="flex items-center justify-between">
+                          <h3 className="text-sm font-medium">{t('storedetails.hours')}</h3>
+                          <Badge variant={isStoreOpenNow(selectedStore) ? 'success' : 'destructive'}>
+                            {isStoreOpenNow(selectedStore) ? t('storedetails.open') : t('storedetails.closed')}
+                          </Badge>
+                        </div>
+                        <div className="mt-1 text-sm">
+                          {groupedHours.map((group, i) => (
+                              <div key={i} className="flex justify-between text-muted-foreground text-xs mb-1">
+                                <span>{group.days}</span>
+                                <span>{group.hours}</span>
+                              </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              )}
+
+
+            </div>
+          </div>
+        </CardContent>
+      </Card>
   );
 };
 
