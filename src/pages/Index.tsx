@@ -36,7 +36,7 @@ const StoreLocatorContent = () => {
   };
 
   return (
-      <div className="relative w-full h-full min-h-[600px] overflow-hidden bg-store-background flex">
+      <div className="relative w-full h-full min-h-[600px] overflow-hidden bg-store-background shadow-md flex">
           {/* Sidebar */}
         <div
             className={`

@@ -32,7 +32,8 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }) => {
   return (
     <form onSubmit={handleSearch} className={`relative ${className || ''}`}>
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+        <Search className="absolute left-1 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 mr-3" />
+
         <Input
           type="text"
           placeholder={t('searchbar.placeholder')}
