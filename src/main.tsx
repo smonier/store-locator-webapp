@@ -5,7 +5,7 @@ import './App'; // This file sets up and exposes window.storeLocatorUIApp
 // You must call this from somewhere — either here or via external script
 
 
-/*window.storeLocatorUIApp?.('root', {
+window.storeLocatorUIApp?.('root', {
     host: window.location.host,
     workspace: 'LIVE',
     isEdit: false,
@@ -18,5 +18,5 @@ import './App'; // This file sets up and exposes window.storeLocatorUIApp
     scope: 'lkk-corp',
     previewCm: '',
     previewTarget: ''
-});*/
+});
 
