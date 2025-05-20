@@ -42,12 +42,15 @@ const StoreLocatorContent = () => {
     }
   }, [selectedStore, isMobile]);
 
-  React.useEffect(() => {
-    toast({
-      title: t('toast.welcome.title'),
-      description: t('toast.welcome.description')
-    });
-  }, [toast, t]);
+    React.useEffect(() => {
+        const title = data?.response?.storeApp?.welcomeTitle?.value || t('toast.welcome.title');
+        const description = data?.response?.storeApp?.welcomeMessage?.value || t('toast.welcome.description');
+
+        toast({
+            title,
+            description
+        });
+    }, [toast, data, t]);
 
     const handleStoreSelect = () => {
         setShowStoreDetails(true);

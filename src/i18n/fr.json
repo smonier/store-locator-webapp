@@ -2,7 +2,7 @@
     "title": "Localisateur d'agences",
     "toast": {
         "welcome": {
-            "title": "Bienvenue sur le localisateur d'agences'",
+            "title": "Bienvenue sur le localisateur d'agences",
             "description": "Trouvez l'agence la plus proche en utilisant la recherche ou la carte"
         }
     },

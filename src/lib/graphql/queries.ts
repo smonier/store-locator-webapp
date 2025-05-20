@@ -68,7 +68,13 @@ export const GetStoreLocatorApp = gql`
     response: jcr(workspace: $workspace) {
       workspace
       storeApp: nodeById(uuid: $id) {
-        title: displayName(language:$language)
+        title: displayName(language: $language)
+        welcomeTitle: property(name: "welcomeTitle", language: $language) {
+          value
+        }
+        welcomeMessage: property(name: "welcomeMessage", language: $language) {
+          value
+        }
       }
     }
   }`;
