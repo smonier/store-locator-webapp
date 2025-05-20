@@ -15,7 +15,8 @@ interface StoreDetailsProps {
 
 const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
   const { selectedStore } = useStores();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const locale = i18n.language || 'en'; // Fallback if undefined
 
   if (!selectedStore) return null;
 
@@ -26,7 +27,7 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
   };
 
   // Group opening hours by identical times for better display
-  const groupedHours = groupOpeningHours(selectedStore.openingHoursSpecification || []);
+  const groupedHours = groupOpeningHours(selectedStore.openingHoursSpecification || [], t, locale);
 
   return (
       <Card className={`overflow-hidden ${className || ''}`}>
@@ -161,107 +162,108 @@ const StoreDetails: React.FC<StoreDetailsProps> = ({ className, onClose }) => {
   );
 };
 
-// Helper function to group opening hours that are the same
-function groupOpeningHours(hours: Array<{ dayOfWeek: string; opens: string; closes: string }>) {
-  const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-  
-  // Sort hours by day of week according to our order
+function groupOpeningHours(
+    hours: Array<{ dayOfWeek: string; opens: string; closes: string }>,
+    t: (key: string) => string,
+    locale: string
+) {
+  const daysOrder = [
+    'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
+  ];
+
   const sortedHours = [...hours].sort(
-    (a, b) => daysOrder.indexOf(a.dayOfWeek) - daysOrder.indexOf(b.dayOfWeek)
+      (a, b) => daysOrder.indexOf(a.dayOfWeek) - daysOrder.indexOf(b.dayOfWeek)
   );
-  
+
   const result: Array<{ days: string; hours: string }> = [];
   let currentGroup: typeof hours = [];
-  
+
   sortedHours.forEach((hour, index) => {
     if (
-      index === 0 ||
-      hour.opens !== sortedHours[index - 1].opens ||
-      hour.closes !== sortedHours[index - 1].closes
+        index === 0 ||
+        hour.opens !== sortedHours[index - 1].opens ||
+        hour.closes !== sortedHours[index - 1].closes
     ) {
-      // Start a new group
       if (currentGroup.length > 0) {
-        result.push(formatHourGroup(currentGroup));
+        result.push(formatHourGroup(currentGroup, t, locale));
         currentGroup = [];
       }
       currentGroup.push(hour);
     } else {
-      // Add to existing group
       currentGroup.push(hour);
     }
-    
-    // Handle the last item
+
     if (index === sortedHours.length - 1 && currentGroup.length > 0) {
-      result.push(formatHourGroup(currentGroup));
+      result.push(formatHourGroup(currentGroup, t, locale));
     }
   });
-  
+
   return result;
 }
 
-function formatHourGroup(group: Array<{ dayOfWeek: string; opens: string; closes: string }>) {
+function formatHourGroup(
+    group: Array<{ dayOfWeek: string; opens: string; closes: string }>,
+    t: (key: string) => string,
+    locale: string
+) {
   const days = group.map(h => h.dayOfWeek);
   let daysText = '';
-  
+
+  const translateDay = (day: string) => t(`days.${day.toLowerCase()}`);
+
   if (days.length === 1) {
-    daysText = days[0];
+    daysText = translateDay(days[0]);
   } else if (days.length === 7) {
-    daysText = 'Every day';
+    daysText = t('days.everyday');
   } else if (
-    days.includes('Monday') &&
-    days.includes('Tuesday') &&
-    days.includes('Wednesday') &&
-    days.includes('Thursday') &&
-    days.includes('Friday') &&
-    days.length === 5
+      ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].every(d => days.includes(d)) &&
+      days.length === 5
   ) {
-    daysText = 'Weekdays';
+    daysText = t('days.weekdays');
   } else if (days.includes('Saturday') && days.includes('Sunday') && days.length === 2) {
-    daysText = 'Weekends';
+    daysText = t('days.weekends');
   } else {
-    // For consecutive days, show as ranges
     const daysOrder = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const sortedDays = days.sort((a, b) => daysOrder.indexOf(a) - daysOrder.indexOf(b));
-    
+
     let rangeStart = -1;
     const ranges: string[] = [];
-    
+
     daysOrder.forEach((day, i) => {
       if (sortedDays.includes(day)) {
         if (rangeStart === -1) rangeStart = i;
         if (!sortedDays.includes(daysOrder[i + 1])) {
           const range = rangeStart === i
-            ? daysOrder[rangeStart]
-            : `${daysOrder[rangeStart].substring(0, 3)}-${daysOrder[i].substring(0, 3)}`;
+              ? translateDay(daysOrder[rangeStart])
+              : `${translateDay(daysOrder[rangeStart])} - ${translateDay(daysOrder[i])}`;
           ranges.push(range);
           rangeStart = -1;
         }
       }
     });
-    
+
     daysText = ranges.join(', ');
   }
-  
-  const hours = group[0].opens === '00:00' && group[0].closes === '23:59'
-    ? '24 hours'
-    : `${formatTime(group[0].opens)} - ${formatTime(group[0].closes)}`;
-  
+
+  const hours =
+      group[0].opens === '00:00' && group[0].closes === '23:59'
+          ? t('storedetails.allday', { defaultValue: '24 hours' })
+          : `${formatTime(group[0].opens, locale)} - ${formatTime(group[0].closes, locale)}`;
+
   return { days: daysText, hours };
 }
 
-function formatTime(time: string): string {
+function formatTime(time: string, locale: string = 'en') {
   const [hours, minutes] = time.split(':').map(Number);
-  let period = 'AM';
-  let hour = hours;
-  
-  if (hours >= 12) {
-    period = 'PM';
-    hour = hours === 12 ? 12 : hours - 12;
-  }
-  
-  hour = hour === 0 ? 12 : hour;
-  
-  return `${hour}${minutes > 0 ? `:${minutes.toString().padStart(2, '0')}` : ''} ${period}`;
+
+  const date = new Date();
+  date.setHours(hours);
+  date.setMinutes(minutes);
+
+  return new Intl.DateTimeFormat(locale, {
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(date);
 }
 
 function isStoreOpenNow(store: { openingHoursSpecification?: Array<{ dayOfWeek: string; opens: string; closes: string }> }) {

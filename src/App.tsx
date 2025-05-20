@@ -113,7 +113,8 @@ const render = async (target: string, context: RenderContext)=> {
                     previewCm,
                     previewTarget,
                     isPreview,
-                    scope
+                    scope,
+                    storeLocatorId
                 }}>
                         <ApolloProvider client={client}>
                             <AppCtxProvider value={appContext}>

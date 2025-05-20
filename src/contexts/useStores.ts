@@ -20,7 +20,7 @@ export function mapStoreNodesToStores(nodes: any[]): Store[] {
         telephone: node.telephone?.value || '',
         url: node.url?.value || node.internalUrl?.node?.url || '',
         priceRange: node.priceRange?.value || '',
-        image: node.image?.node?.url ? `http://localhost:8080${node.image.node.url}` : '',
+        image: node.image?.node?.url ? `${node.image.node.url}` : '',
         amenityFeature: node.amenityFeature?.values || [],
         geo: {
             latitude: parseFloat(node.latitude?.value),

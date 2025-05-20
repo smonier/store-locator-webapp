@@ -14,7 +14,9 @@
     "nostore": "Keine Filialen gefunden.",
     "open": "Geöffnet",
     "closed": "Geschlossen",
-    "miles": "Meilen entfernt"
+    "miles": "Meilen entfernt",
+    "reset": "Zurücksetzen"
+
   },
   "storedetails": {
     "address": "Adresse",

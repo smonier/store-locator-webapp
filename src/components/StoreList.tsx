@@ -8,9 +8,9 @@ import { useTranslation } from 'react-i18next';
 
 interface StoreListProps {
   className?: string;
-}
+  onStoreClick?: () => void;}
 
-const StoreList: React.FC<StoreListProps> = ({ className }) => {
+const StoreList: React.FC<StoreListProps> = ({ className, onStoreClick }) => {
   const { filteredStores, selectedStore, selectStore, loading } = useStores();
   const { t } = useTranslation();
 
@@ -43,7 +43,10 @@ const StoreList: React.FC<StoreListProps> = ({ className }) => {
           key={store.id} 
           store={store} 
           isSelected={selectedStore?.id === store.id}
-          onSelect={() => selectStore(store.id)}
+          onSelect={() => {
+            selectStore(store.id);
+            onStoreClick?.();
+          }}
         />
       ))}
     </div>
@@ -100,6 +103,7 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ store, isSelected, onSele
 
 // Helper function to check if the store is currently open
 function isStoreOpen(store: Store): boolean {
+
   if (!store.openingHoursSpecification || store.openingHoursSpecification.length === 0) {
     return false;
   }

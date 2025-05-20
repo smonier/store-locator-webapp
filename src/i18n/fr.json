@@ -1,20 +1,21 @@
 {
-    "title": "Localisateur de magasins",
+    "title": "Localisateur d'agences",
     "toast": {
         "welcome": {
-            "title": "Bienvenue sur le localisateur de magasins",
-            "description": "Trouvez le magasin le plus proche en utilisant la recherche ou la carte"
+            "title": "Bienvenue sur le localisateur d'agences'",
+            "description": "Trouvez l'agence la plus proche en utilisant la recherche ou la carte"
         }
     },
     "searchbar": {
-        "placeholder": "  Rechercher un magasin par nom ou localisation...",
+        "placeholder": "  Rechercher ...",
         "button": "rechercher"
     },
     "storelist": {
-        "nostore": "Aucun magasin trouvé.",
+        "nostore": "Aucune agence trouvée.",
         "open": "Ouvert",
         "closed": "Fermé",
-        "miles": "miles"
+        "miles": "miles",
+        "reset": "Réinit."
     },
     "storedetails": {
         "address": "Adresse",
@@ -23,6 +24,19 @@
         "open": "OUVERT",
         "closed": "FERMÉ",
         "amenities": "Services",
-        "website": "Visiter le site"
+        "website": "Visiter le site",
+        "allday": "Ouvert 24h/24"
+    },
+    "days": {
+        "monday": "Lundi",
+        "tuesday": "Mardi",
+        "wednesday": "Mercredi",
+        "thursday": "Jeudi",
+        "friday": "Vendredi",
+        "saturday": "Samedi",
+        "sunday": "Dimanche",
+        "weekdays": "En semaine",
+        "weekends": "Week-end",
+        "everyday": "Tous les jours"
     }
 }

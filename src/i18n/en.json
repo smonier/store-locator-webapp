@@ -14,7 +14,8 @@
         "nostore": "No stores found.",
         "open" : "Open",
         "closed" : "Closed",
-        "miles" : "miles away"
+        "miles" : "miles away",
+        "reset" : "Reset"
     },
     "storedetails": {
         "address": "Address",
@@ -23,6 +24,19 @@
         "open": "OPEN NOW",
         "closed": "CLOSED",
         "amenities": "Amenities",
-        "website": "Visit Website"
+        "website": "Visit Website",
+        "allday": "Open 24 hours"
+    },
+    "days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday",
+        "weekdays": "Weekdays",
+        "weekends": "Weekends",
+        "everyday": "Every day"
     }
 }

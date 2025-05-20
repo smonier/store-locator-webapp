@@ -61,3 +61,14 @@ export const GET_ALL_STORES = gql`
     }
   }
 `;
+
+
+export const GetStoreLocatorApp = gql`
+  query getStoreLocatorApp($workspace: Workspace!, $id: String!, $language: String!) {
+    response: jcr(workspace: $workspace) {
+      workspace
+      storeApp: nodeById(uuid: $id) {
+        title: displayName(language:$language)
+      }
+    }
+  }`;

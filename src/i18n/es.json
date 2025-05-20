@@ -14,7 +14,8 @@
     "nostore": "No se encontraron tiendas.",
     "open": "Abierto",
     "closed": "Cerrado",
-    "miles": "millas"
+    "miles": "millas",
+    "reset": "Restablecer"
   },
   "storedetails": {
     "address": "Dirección",

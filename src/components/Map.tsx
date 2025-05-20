@@ -37,17 +37,29 @@ const createActiveIcon = () =>
 
 interface StoreMapProps {
   className?: string;
-}
+    onStoreClick?: () => void;}
 
-const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
+const FitBoundsOnMount = ({ stores }) => {
+    const map = useMap();
+
+    useEffect(() => {
+        if (stores.length === 0) return;
+        const bounds = L.latLngBounds(stores.map(store => [store.geo.latitude, store.geo.longitude]));
+        map.fitBounds(bounds, { padding: [30, 30] });
+    }, [stores, map]);
+
+    return null;
+};
+
+const StoreMap: React.FC<StoreMapProps> = ({ className, onStoreClick }) => {
   const { filteredStores, selectedStore, selectStore } = useStores();
   const [mapCenter, setMapCenter] = useState<[number, number]>([37.7749, -122.4194]);
   const [mapZoom, setMapZoom] = useState(12);
   const mapRef = useRef<L.Map | null>(null);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (selectedStore) {
-      setMapCenter([selectedStore.geo.latitude, selectedStore.geo.longitude]);
+      setMapCenter([selectedStore.geo.latitude-0.007, selectedStore.geo.longitude]);
       setMapZoom(15);
     } else if (filteredStores.length > 0) {
       setMapCenter([filteredStores[0].geo.latitude, filteredStores[0].geo.longitude]);
@@ -59,8 +71,19 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     if (mapRef.current) {
       mapRef.current.setView(mapCenter, mapZoom);
     }
-  }, [mapCenter, mapZoom]);
-
+  }, [mapCenter, mapZoom]);*/
+    useEffect(() => {
+        if (selectedStore && mapRef.current) {
+            mapRef.current.setView(
+                [selectedStore.geo.latitude - 0.007, selectedStore.geo.longitude],
+                15
+            );
+        }
+        if (!selectedStore && filteredStores.length > 0 && mapRef.current) {
+            const bounds = L.latLngBounds(filteredStores.map(s => [s.geo.latitude, s.geo.longitude]));
+            mapRef.current.fitBounds(bounds, { padding: [30, 30] });
+        }
+    }, [selectedStore, filteredStores]);
   // Helper component to set map ref via useMap
   const SetMapRef = () => {
     const map = useMap();
@@ -70,49 +93,35 @@ const StoreMap: React.FC<StoreMapProps> = ({ className }) => {
     return null;
   };
 
-  return (
-      <div className={`w-full h-full ${className || ''}`}>
-        <MapContainer
-            center={mapCenter}
-            zoom={mapZoom}
-            className="h-full w-full rounded-lg z-0"
-            style={{ height: '100%', width: '100%' }}
-        >
-          <SetMapRef />
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-
-          {filteredStores.map((store) => {
-            const isActive = selectedStore?.id === store.id;
-            return (
-                <Marker
-                    key={store.id}
-                    position={[store.geo.latitude, store.geo.longitude]}
-                    icon={isActive ? createActiveIcon() : defaultIcon}
-                    eventHandlers={{
-                      click: () => selectStore(store.id),
-                    }}
-                >
-                  {/*<Popup>
-                    <div className="text-sm">
-                      <h3 className="font-semibold text-store-primary">{store.name}</h3>
-                      <p className="text-xs text-gray-600">{store.address.streetAddress}</p>
-                      <p className="text-xs text-gray-600">
-                        {store.address.addressLocality}, {store.address.addressRegion}
-                      </p>
-                      <button
-                          onClick={() => selectStore(store)}
-                          className="mt-2 text-xs font-semibold text-store-primary hover:text-store-secondary"
-                      >
-                        View Details
-                      </button>
-                    </div>
-                  </Popup>*/}
-                </Marker>
-            );
-          })}
-        </MapContainer>
-      </div>
-  );
+    return (
+        <div className="h-screen w-full" style={{  position: 'relative', background: '#eee' }}>
+            <MapContainer
+                center={mapCenter}
+                zoom={mapZoom}
+                scrollWheelZoom={true}
+                style={{ height: '100%', width: '100%'}}
+            >
+                <SetMapRef />
+                <FitBoundsOnMount stores={filteredStores} />
+                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+                {filteredStores.map((store) => {
+                    const isActive = selectedStore?.id === store.id;
+                    return (
+                        <Marker
+                            key={store.id}
+                            position={[store.geo.latitude, store.geo.longitude]}
+                            icon={isActive ? createActiveIcon() : defaultIcon}
+                            eventHandlers={{ click: () => {
+                                selectStore(store.id);
+                                    onStoreClick?.();
+                                }
+                            }}
+                        />
+                    );
+                })}
+            </MapContainer>
+        </div>
+    );
 };
 
 export default StoreMap;
