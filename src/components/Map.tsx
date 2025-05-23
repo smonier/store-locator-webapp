@@ -1,10 +1,12 @@
+
 import React, { useEffect, useState, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useStores } from '../contexts/useStores';
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+import styles from './Map.module.css';
 
 // Default Leaflet marker icon
 const defaultIcon = L.icon({
@@ -37,7 +39,8 @@ const createActiveIcon = () =>
 
 interface StoreMapProps {
   className?: string;
-    onStoreClick?: () => void;}
+  onStoreClick?: () => void;
+}
 
 const FitBoundsOnMount = ({ stores }) => {
     const map = useMap();
@@ -53,75 +56,76 @@ const FitBoundsOnMount = ({ stores }) => {
 
 const StoreMap: React.FC<StoreMapProps> = ({ className, onStoreClick }) => {
   const { filteredStores, selectedStore, selectStore } = useStores();
-  const [mapCenter, setMapCenter] = useState<[number, number]>([37.7749, -122.4194]);
-  const [mapZoom, setMapZoom] = useState(12);
+  const mapInitialized = useRef(false);
   const mapRef = useRef<L.Map | null>(null);
+  const [mapReady, setMapReady] = useState(false);
 
-  /*useEffect(() => {
-    if (selectedStore) {
-      setMapCenter([selectedStore.geo.latitude-0.007, selectedStore.geo.longitude]);
-      setMapZoom(15);
-    } else if (filteredStores.length > 0) {
-      setMapCenter([filteredStores[0].geo.latitude, filteredStores[0].geo.longitude]);
-      setMapZoom(12);
-    }
-  }, [selectedStore, filteredStores]);
+  // Set initial map center and zoom
+  const initialPosition = filteredStores.length > 0 
+    ? [filteredStores[0].geo.latitude, filteredStores[0].geo.longitude] 
+    : [37.7749, -122.4194];
+  
+  const initialZoom = 12;
 
-  useEffect(() => {
-    if (mapRef.current) {
-      mapRef.current.setView(mapCenter, mapZoom);
-    }
-  }, [mapCenter, mapZoom]);*/
-    useEffect(() => {
-        if (selectedStore && mapRef.current) {
-            mapRef.current.setView(
-                [selectedStore.geo.latitude - 0.007, selectedStore.geo.longitude],
-                15
-            );
-        }
-        if (!selectedStore && filteredStores.length > 0 && mapRef.current) {
-            const bounds = L.latLngBounds(filteredStores.map(s => [s.geo.latitude, s.geo.longitude]));
-            mapRef.current.fitBounds(bounds, { padding: [30, 30] });
-        }
-    }, [selectedStore, filteredStores]);
   // Helper component to set map ref via useMap
   const SetMapRef = () => {
     const map = useMap();
+    
     useEffect(() => {
-      mapRef.current = map;
+      if (!mapInitialized.current) {
+        mapRef.current = map;
+        mapInitialized.current = true;
+        setMapReady(true);
+      }
     }, [map]);
+    
     return null;
   };
 
-    return (
-        <div className="h-screen w-full" style={{  position: 'relative', background: '#eee' }}>
-            <MapContainer
-                center={mapCenter}
-                zoom={mapZoom}
-                scrollWheelZoom={true}
-                style={{ height: '100%', width: '100%'}}
-            >
-                <SetMapRef />
-                <FitBoundsOnMount stores={filteredStores} />
-                <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                {filteredStores.map((store) => {
-                    const isActive = selectedStore?.id === store.id;
-                    return (
-                        <Marker
-                            key={store.id}
-                            position={[store.geo.latitude, store.geo.longitude]}
-                            icon={isActive ? createActiveIcon() : defaultIcon}
-                            eventHandlers={{ click: () => {
-                                selectStore(store.id);
-                                    onStoreClick?.();
-                                }
-                            }}
-                        />
-                    );
-                })}
-            </MapContainer>
-        </div>
-    );
+  // Effect to handle selected store changes
+  useEffect(() => {
+    if (selectedStore && mapRef.current && mapReady) {
+      mapRef.current.setView(
+        [selectedStore.geo.latitude - 0.007, selectedStore.geo.longitude],
+        15
+      );
+    } else if (!selectedStore && filteredStores.length > 0 && mapRef.current && mapReady) {
+      const bounds = L.latLngBounds(filteredStores.map(s => [s.geo.latitude, s.geo.longitude]));
+      mapRef.current.fitBounds(bounds, { padding: [30, 30] });
+    }
+  }, [selectedStore, filteredStores, mapReady]);
+
+  return (
+    <div className={`${styles.mapContainer} ${className || ''}`}>
+      <MapContainer
+        center={initialPosition as [number, number]}
+        zoom={initialZoom}
+        scrollWheelZoom={true}
+        className={styles.mapInner}
+        whenReady={() => {}}
+      >
+        <SetMapRef />
+        <FitBoundsOnMount stores={filteredStores} />
+        <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+        {filteredStores.map((store) => {
+          const isActive = selectedStore?.id === store.id;
+          return (
+            <Marker
+              key={store.id}
+              position={[store.geo.latitude, store.geo.longitude]}
+              icon={isActive ? createActiveIcon() : defaultIcon}
+              eventHandlers={{ 
+                click: () => {
+                  selectStore(store.id);
+                  onStoreClick?.();
+                }
+              }}
+            />
+          );
+        })}
+      </MapContainer>
+    </div>
+  );
 };
 
 export default StoreMap;

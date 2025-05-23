@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { Toaster } from '@/components/ui/toaster';
@@ -17,6 +18,43 @@ import { JahiaCtxProvider, AppCtxProvider } from './contexts';
 import { ErrorHandler } from './components/Error/ErrorHandler';
 import './index.css';
 import './styles/map-overrides.css';
+
+// Define the DigitalData interface for window
+interface DigitalData {
+  _webapp: boolean;
+  scope: string;
+  site: {
+    siteInfo: { siteID: string }
+  };
+  page: {
+    pageInfo: {
+      pageID: string;
+      pageName: string;
+      pagePath: string;
+      destinationURL: string;
+      language: string;
+      categories: any[];
+      tags: any[];
+    };
+    attributes: Record<string, any>;
+    consentTypes: any[];
+  };
+  events: any[];
+  wemInitConfig: {
+    contextServerUrl: string;
+    timeoutInMilliseconds: string;
+    activateWem: boolean;
+    trackerSessionIdCookieName: string;
+  };
+}
+
+// Extend the Window interface
+declare global {
+  interface Window {
+    digitalData?: DigitalData;
+    storeLocatorUIApp?: (target: string, context: RenderContext) => Promise<void>;
+  }
+}
 
 interface RenderContext {
     host: string;

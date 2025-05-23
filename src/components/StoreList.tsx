@@ -2,13 +2,13 @@
 import React from 'react';
 import { Store } from '../types/store';
 import { useStores } from '../contexts/useStores';
-import { Card } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { useTranslation } from 'react-i18next';
+import styles from './StoreList.module.css';
 
 interface StoreListProps {
   className?: string;
-  onStoreClick?: () => void;}
+  onStoreClick?: () => void;
+}
 
 const StoreList: React.FC<StoreListProps> = ({ className, onStoreClick }) => {
   const { filteredStores, selectedStore, selectStore, loading } = useStores();
@@ -16,13 +16,13 @@ const StoreList: React.FC<StoreListProps> = ({ className, onStoreClick }) => {
 
   if (loading) {
     return (
-      <div className={`flex flex-col space-y-4 ${className || ''}`}>
+      <div className={`${styles.container} ${className || ''}`}>
         {[1, 2, 3, 4].map((i) => (
-          <Card key={i} className="p-4">
-            <Skeleton className="h-5 w-3/4 mb-2" />
-            <Skeleton className="h-4 w-1/2 mb-1" />
-            <Skeleton className="h-4 w-2/3" />
-          </Card>
+          <div key={i} className={styles.storeItem}>
+            <div className={`${styles.skeleton} ${styles.skeletonFull}`} />
+            <div className={`${styles.skeleton} ${styles.skeletonHalf}`} />
+            <div className={`${styles.skeleton} ${styles.skeletonTwoThirds}`} />
+          </div>
         ))}
       </div>
     );
@@ -30,14 +30,14 @@ const StoreList: React.FC<StoreListProps> = ({ className, onStoreClick }) => {
 
   if (filteredStores.length === 0) {
     return (
-      <div className={`flex flex-col items-center justify-center h-full ${className || ''}`}>
-        <p className="text-muted-foreground">{t('storelist.nostore')}</p>
+      <div className={`${styles.noStores} ${className || ''}`}>
+        <p>{t('storelist.nostore')}</p>
       </div>
     );
   }
 
   return (
-    <div className={`flex flex-col space-y-3 ${className || ''}`}>
+    <div className={`${styles.container} ${className || ''}`}>
       {filteredStores.map((store) => (
         <StoreListItem 
           key={store.id} 
@@ -63,47 +63,38 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ store, isSelected, onSele
   const { t } = useTranslation();
 
   return (
-    <Card 
-      className={`p-4 cursor-pointer transition-all duration-200 ${
-        isSelected 
-          ? 'bg-store-accent/10 border-store-primary' 
-          : 'hover:bg-muted/40'
-      }`}
+    <div 
+      className={isSelected ? styles.storeItemSelected : styles.storeItem}
       onClick={onSelect}
     >
-      <div className="flex justify-between">
+      <div className={styles.itemContent}>
         <div>
-          <h3 className={`font-medium ${isSelected ? 'text-store-primary' : 'text-foreground'}`}>
+          <h3 className={isSelected ? `${styles.storeName} ${styles.storeNameSelected}` : styles.storeName}>
             {store.name}
           </h3>
-          <p className="text-sm text-muted-foreground">
+          <p className={styles.storeLocation}>
             {store.address.addressLocality}, {store.address.addressRegion}
           </p>
           {store.distance && (
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className={styles.storeDistance}>
               {store.distance.toFixed(1)} {t('storelist.miles')}
             </p>
           )}
         </div>
         {store.openingHoursSpecification && (
-          <div className="text-right">
-            <span className={`text-xs px-2 py-1 rounded-full ${
-              isStoreOpen(store) 
-                ? 'bg-green-100 text-green-800' 
-                : 'bg-red-100 text-red-800'
-            }`}>
-            {isStoreOpen(store) ? t('storelist.open') : t('storelist.closed')}
+          <div>
+            <span className={isStoreOpen(store) ? styles.openBadge : styles.closedBadge}>
+              {isStoreOpen(store) ? t('storelist.open') : t('storelist.closed')}
             </span>
           </div>
         )}
       </div>
-    </Card>
+    </div>
   );
 };
 
 // Helper function to check if the store is currently open
 function isStoreOpen(store: Store): boolean {
-
   if (!store.openingHoursSpecification || store.openingHoursSpecification.length === 0) {
     return false;
   }

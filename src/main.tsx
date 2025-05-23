@@ -1,10 +1,11 @@
 
 import './App'; // This file sets up and exposes window.storeLocatorUIApp
 
+import './styles/global.css';
+import 'leaflet/dist/leaflet.css';
+
 // Example: call the exported render function with your target and context
 // You must call this from somewhere — either here or via external script
-
-
 window.storeLocatorUIApp?.('root', {
     host: window.location.host,
     workspace: 'LIVE',
@@ -19,4 +20,3 @@ window.storeLocatorUIApp?.('root', {
     previewCm: '',
     previewTarget: ''
 });
-

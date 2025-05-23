@@ -1,10 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useStores } from '../contexts/useStores';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import styles from './SearchBar.module.css';
 
 interface SearchBarProps {
   className?: string;
@@ -30,25 +29,23 @@ const SearchBar: React.FC<SearchBarProps> = ({ className }) => {
   }, [query, searchStores]);
   
   return (
-    <form onSubmit={handleSearch} className={`relative ${className || ''}`}>
-      <div className="relative">
-        <Search className="absolute left-1 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 mr-3" />
+    <form onSubmit={handleSearch} className={`${styles.searchForm} ${className || ''}`}>
+      <div className={styles.inputContainer}>
+        <Search className={styles.searchIcon} />
 
-        <Input
+        <input
           type="text"
           placeholder={t('searchbar.placeholder')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="pl-10 pr-16 bg-background border-muted"
+          className={styles.input}
         />
-        <Button 
+        <button 
           type="submit" 
-          size="sm" 
-          variant="ghost"
-          className="absolute right-1 top-1/2 transform -translate-y-1/2 h-7 text-xs"
+          className={styles.searchButton}
         >
           {t('searchbar.button')}
-        </Button>
+        </button>
       </div>
     </form>
   );

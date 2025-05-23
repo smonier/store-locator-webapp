@@ -1,0 +1,58 @@
+
+.mapContainer {
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  background-color: #eee;
+}
+
+.mapInner {
+  height: 100%;
+  width: 100%;
+}
+
+.markerActive img {
+  transform: scale(1.3);
+  filter: hue-rotate(90deg);
+}
+
+/* Leaflet styles */
+:global(.leaflet-container) {
+  font: inherit;
+  font-family: inherit;
+  height: 100%;
+  width: 100%;
+}
+
+:global(.leaflet-popup-content-wrapper) {
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  padding: 0;
+}
+
+:global(.leaflet-popup-content) {
+  margin: 0.75rem 1rem;
+  width: auto !important;
+  min-width: 150px;
+}
+
+:global(.leaflet-popup-tip) {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+
+/* Active marker styling */
+:global(.leaflet-marker-icon.active-marker) {
+  filter: hue-rotate(120deg);
+  z-index: 1000 !important;
+  transform-origin: bottom center;
+  animation: bounce 0.5s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}

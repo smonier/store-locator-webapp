@@ -1,0 +1,166 @@
+
+.container {
+  position: relative;
+  width: 100%;
+  max-height: 800px;
+  overflow: hidden;
+  background-color: var(--color-store-background);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  display: flex;
+  border: 1px solid var(--color-border);
+}
+
+.sidebar {
+  height: 100%;
+  z-index: 10;
+  background-color: var(--color-background);
+  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebarOpen {
+  width: 24rem;
+  max-width: 90vw;
+}
+
+.sidebarClosed {
+  width: 0;
+}
+
+.sidebarMobile {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.sidebarDesktop {
+  position: relative;
+}
+
+.sidebarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.title {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--color-store-primary);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.resetButton {
+  font-size: var(--font-xs);
+  padding: 0.25rem 0.5rem;
+  background-color: white;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-foreground);
+}
+
+.resetButton:hover {
+  background-color: var(--color-muted);
+}
+
+.closeButton {
+  padding: 0.25rem 0.5rem;
+  background-color: transparent;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  background-color: var(--color-muted);
+}
+
+.searchContainer {
+  padding: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.storeListContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  max-height: 650px;
+}
+
+.toggleButton {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 20;
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.collapseButton {
+  position: absolute;
+  top: 50%;
+  z-index: 20;
+  background-color: white;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+
+.collapseButtonOpen {
+  left: 24rem;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.collapseButtonClosed {
+  left: 0;
+}
+
+.mapContainer {
+  flex: 1;
+  position: relative;
+  max-height: 800px;
+  width: 100%;
+}
+
+.storeDetailsContainer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1100;
+  background-color: white;
+  box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.iconSm {
+  height: 1.25rem;
+  width: 1.25rem;
+}

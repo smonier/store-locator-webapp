@@ -1,0 +1,221 @@
+
+.card {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.cardContent {
+  padding: 1rem;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+.column {
+  flex-shrink: 0;
+}
+
+.columnQuarter {
+  composes: column;
+  width: 25%;
+}
+
+.imageContainer {
+  position: relative;
+  width: 100%;
+  height: 10rem;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 9999px;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+}
+
+.closeButton:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.title {
+  font-size: var(--font-lg);
+  font-weight: 700;
+}
+
+.description {
+  font-size: var(--font-sm);
+  color: var(--color-muted-foreground);
+}
+
+.amenities {
+  margin-top: 0.5rem;
+}
+
+.amenityHeader {
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.amenityIcon {
+  height: 1rem;
+  width: 1rem;
+  color: var(--color-store-primary);
+  margin-right: 0.5rem;
+}
+
+.amenityTitle {
+  font-size: var(--font-sm);
+  font-weight: 500;
+}
+
+.badgeContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.badge {
+  font-size: var(--font-xs);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--color-border);
+}
+
+.verticalDivider {
+  width: 1px;
+  background-color: var(--color-border);
+}
+
+.infoSection {
+  display: flex;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+
+.infoIcon {
+  height: 1.25rem;
+  width: 1.25rem;
+  color: var(--color-store-primary);
+  margin-right: 0.5rem;
+  margin-top: 0.125rem;
+}
+
+.infoTitle {
+  font-size: var(--font-sm);
+  font-weight: 500;
+}
+
+.infoContent {
+  font-size: var(--font-sm);
+  color: var(--color-muted-foreground);
+}
+
+.infoLink {
+  font-size: var(--font-xs);
+  color: var(--color-store-primary);
+  display: inline-block;
+  margin-top: 0.25rem;
+}
+
+.infoLink:hover {
+  color: var(--color-store-secondary);
+  text-decoration: underline;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.contactIcon {
+  height: 1rem;
+  width: 1rem;
+  color: var(--color-store-primary);
+  margin-right: 0.5rem;
+}
+
+.contactLink {
+  font-size: var(--font-sm);
+}
+
+.contactLink:hover {
+  text-decoration: underline;
+}
+
+.hoursHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+
+.hoursTitle {
+  font-size: var(--font-sm);
+  font-weight: 500;
+}
+
+.hoursStatus {
+  display: inline-block;
+  font-size: var(--font-xs);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-full);
+}
+
+.open {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.closed {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.hoursItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-xs);
+  color: var(--color-muted-foreground);
+  margin-bottom: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .flexRow {
+    flex-direction: column;
+  }
+  
+  .columnQuarter {
+    width: 100%;
+  }
+}
