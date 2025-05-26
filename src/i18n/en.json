@@ -7,7 +7,7 @@
         }
     },
     "searchbar": {
-        "placeholder": "  Search stores by name or location...",
+        "placeholder": "Search stores by name or location...",
         "button": "search"
     },
     "storelist" : {

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, useRef } from 'react';
-import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker,Tooltip, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { useStores } from '../contexts/useStores';
@@ -20,13 +20,12 @@ const defaultIcon = L.icon({
 // Create a custom active icon using divIcon
 const createActiveIcon = () =>
     L.divIcon({
-        className: 'custom-div-icon',
         html: `
       <div style="width: 25px; height: 41px;">
         <svg width="25" height="41" viewBox="0 0 25 41" xmlns="http://www.w3.org/2000/svg">
           <path 
-            d="M12.5 0C5.6 0 0 5.6 0 12.5C0 22 12.5 41 12.5 41C12.5 41 25 22 25 12.5C25 5.6 19.4 0 12.5 0Z" 
-            fill="#8D1700"
+            style="fill: var(--primary);"
+            d="M12.5 0C5.6 0 0 5.6 0 12.5C0 22 12.5 41 12.5 41C12.5 41 25 22 25 12.5C25 5.6 19.4 0 12.5 0Z"
           />
           <circle cx="12.5" cy="12.5" r="5" fill="white"/>
         </svg>
@@ -34,7 +33,7 @@ const createActiveIcon = () =>
     `,
         iconSize: [25, 41],
         iconAnchor: [12.5, 41],
-        className: '', // prevent Leaflet from applying its default green marker styles
+        className: '',
     });
 
 interface StoreMapProps {
@@ -93,7 +92,7 @@ const StoreMap: React.FC<StoreMapProps> = ({ className, onStoreClick }) => {
       const bounds = L.latLngBounds(filteredStores.map(s => [s.geo.latitude, s.geo.longitude]));
       mapRef.current.fitBounds(bounds, { padding: [30, 30] });
     }
-  }, [selectedStore, filteredStores, mapReady]);
+  }, [selectedStore, mapReady]);
 
   return (
     <div className={`${styles.mapContainer} ${className || ''}`}>
@@ -113,14 +112,19 @@ const StoreMap: React.FC<StoreMapProps> = ({ className, onStoreClick }) => {
             <Marker
               key={store.id}
               position={[store.geo.latitude, store.geo.longitude]}
-              icon={isActive ? createActiveIcon() : defaultIcon}
-              eventHandlers={{ 
+              icon={ createActiveIcon()}
+              eventHandlers={{
                 click: () => {
                   selectStore(store.id);
                   onStoreClick?.();
                 }
               }}
-            />
+            >
+                <Tooltip direction="top" offset={[0, -20]} opacity={1} permanent={false}>
+                    {store.name}<br/>
+                    {store.address.addressLocality}{store.address.addressRegion ? `, ${store.address.addressRegion}` : ''}
+                </Tooltip>
+            </Marker>
           );
         })}
       </MapContainer>

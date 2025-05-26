@@ -41,6 +41,7 @@
 .storeName {
   font-weight: 500;
   color: var(--color-foreground);
+  font-size: var(--font-base);
 }
 
 .storeNameSelected {

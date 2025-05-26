@@ -14,6 +14,7 @@ import { JahiaCtx } from '../contexts';
 import { useQuery } from "@apollo/client";
 import { useStores } from '../contexts/useStores';
 import styles from './Index.module.css';
+import {clsx} from "clsx";
 
 const StoreLocatorContent = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -44,7 +45,7 @@ const StoreLocatorContent = () => {
     }
   }, [selectedStore, isMobile]);
 
-  React.useEffect(() => {
+/*  React.useEffect(() => {
     const title = data?.response?.storeApp?.welcomeTitle?.value || t('toast.welcome.title');
     const description = data?.response?.storeApp?.welcomeMessage?.value || t('toast.welcome.description');
 
@@ -52,7 +53,7 @@ const StoreLocatorContent = () => {
         title,
         description
     });
-  }, [toast, data, t]);
+  }, [toast, data, t]);*/
 
   const handleStoreSelect = () => {
     setShowStoreDetails(true);
@@ -68,6 +69,7 @@ const StoreLocatorContent = () => {
   };
 
   return (
+      <div className={clsx("wrapper-store-locator",styles.app)}>
     <div className={styles.container}>
       {/* Sidebar */}
       <div className={`
@@ -136,6 +138,7 @@ const StoreLocatorContent = () => {
         )}
       </div>
     </div>
+      </div>
   );
 };
 

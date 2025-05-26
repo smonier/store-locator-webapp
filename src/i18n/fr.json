@@ -7,7 +7,7 @@
         }
     },
     "searchbar": {
-        "placeholder": "  Rechercher ...",
+        "placeholder": "Rechercher ...",
         "button": "rechercher"
     },
     "storelist": {
