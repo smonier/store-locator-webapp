@@ -73,7 +73,7 @@ const StoreListItem: React.FC<StoreListItemProps> = ({ store, isSelected, onSele
             {store.name}
           </h3>
           <p className={styles.storeLocation}>
-            {store.address.addressLocality}, {store.address.addressRegion}
+            {store.address.addressLocality} {store.address.addressRegion ? `, ${store.address.addressRegion}` : ''}
           </p>
           {store.distance && (
             <p className={styles.storeDistance}>

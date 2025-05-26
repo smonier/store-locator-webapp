@@ -20,6 +20,27 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         variables: { language: locale , workspace: workspace, path: site },
         fetchPolicy: 'network-only'   // bypass cache in dev
     });
+    const [query, setQuery] = useState('');
+
+    const searchStores = (q: string) => {
+        setQuery(q);
+        if (!q) return setFilteredStores(stores);
+
+        const lc = q.toLowerCase();
+        setFilteredStores(
+            stores.filter(store =>
+                store.name.toLowerCase().includes(lc) ||
+                store.address.addressLocality.toLowerCase().includes(lc) ||
+                store.address.addressRegion.toLowerCase().includes(lc)
+            )
+        );
+    };
+
+    const resetSearch = () => {
+        setQuery('');
+        setFilteredStores(stores);
+    };
+
     useEffect(() => {
         if (data?.jcr?.nodesByCriteria?.nodes) {
             const mappedStores = mapStoreNodesToStores(data.jcr.nodesByCriteria.nodes);
@@ -38,17 +59,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         }
     };
 
-    const searchStores = (query: string) => {
-        if (!query) return setFilteredStores(stores);
-        const lc = query.toLowerCase();
-        setFilteredStores(
-            stores.filter(store =>
-                store.name.toLowerCase().includes(lc) ||
-                store.address.addressLocality.toLowerCase().includes(lc) ||
-                store.address.addressRegion.toLowerCase().includes(lc)
-            )
-        );
-    };
+
 
     return (
         <StoreContext.Provider value={{
@@ -56,6 +67,9 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
             selectedStore,
             selectStore,
             searchStores,
+            resetSearch,
+            query,
+            setQuery,
             filteredStores,
             loading,
             error

@@ -7,11 +7,12 @@ import styles from './SearchBar.module.css';
 
 interface SearchBarProps {
   className?: string;
+  query: string;
+  setQuery: (val: string) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ className }) => {
-  const [query, setQuery] = useState('');
-  const { searchStores } = useStores();
+  const { query, setQuery, searchStores } = useStores();
   const { t } = useTranslation();
 
   const handleSearch = (e: React.FormEvent) => {

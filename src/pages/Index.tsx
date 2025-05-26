@@ -18,15 +18,15 @@ import {clsx} from "clsx";
 
 const StoreLocatorContent = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const { selectedStore, selectStore } = useStores();
+  const { selectedStore, selectStore, resetSearch } = useStores();
   const isMobile = useIsMobile();
   const { toast } = useToast();
   const { t } = useTranslation();
   const [showStoreDetails, setShowStoreDetails] = useState(false);
   const [appTitle, setAppTitle] = useState(t('title'));
-
   // @ts-ignore
   const { locale, workspace, storeLocatorId } = useContext(JahiaCtx);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const { data, loading, error } = useQuery(GetStoreLocatorApp, {
         variables: { language: locale, workspace: workspace, id: storeLocatorId },
@@ -66,6 +66,8 @@ const StoreLocatorContent = () => {
   const handleResetStores = () => {
     selectStore('');
     setShowStoreDetails(false);
+    setSearchQuery('');
+    resetSearch();
   };
 
   return (
@@ -95,7 +97,7 @@ const StoreLocatorContent = () => {
         </div>
 
         <div className={styles.searchContainer}>
-          <SearchBar />
+          <SearchBar query={searchQuery} setQuery={setSearchQuery} />
         </div>
 
         <div className={styles.storeListContainer}>

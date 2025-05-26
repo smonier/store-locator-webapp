@@ -42,6 +42,7 @@
   font-weight: 500;
   color: var(--color-foreground);
   font-size: var(--font-base);
+  margin-bottom: 0px !important;
 }
 
 .storeNameSelected {
@@ -51,6 +52,7 @@
 .storeLocation {
   font-size: var(--font-sm);
   color: var(--color-muted-foreground);
+  margin-bottom: 0px !important;
 }
 
 .storeDistance {

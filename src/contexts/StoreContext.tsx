@@ -6,6 +6,9 @@ export interface StoreContextType {
   selectedStore: Store | null;
   selectStore: (idOrStore: string | Store) => void;
   searchStores: (query: string) => void;
+  resetSearch: () => void;
+  query: string;
+  setQuery: (query: string) => void;
   filteredStores: Store[];
   loading: boolean;
   error: Error | null;
